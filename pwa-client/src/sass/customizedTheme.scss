@@ -1,0 +1,59 @@
+// Import material design icons (https://materialdesignicons.com)
+@import "~@mdi/font/css/materialdesignicons.min.css";
+
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+// Set up color theme
+// help -> https://bulma.io/documentation/overview/colors/
+$primary: $primary;
+$primary-invert: $primary-invert;
+
+$info: $info;
+$info-invert: $info-invert;
+
+$success: $success;
+$success-invert: $success-invert;
+
+$warning: $warning;
+$warning-invert: $warning-invert;
+
+$danger: $danger;
+$danger-invert: $danger-invert;
+
+$link: $link;
+$link-invert: $link-invert;
+
+// Additional colors
+$twitter: #4099ff;
+$twitter-invert: findColorInvert($twitter);
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: (
+  "primary": (
+    $primary,
+    $primary-invert
+  ),
+  "info": (
+    $info,
+    $info-invert
+  ),
+  "success": (
+    $success,
+    $success-invert
+  ),
+  "warning": (
+    $warning,
+    $warning-invert
+  ),
+  "danger": (
+    $danger,
+    $danger-invert
+  ),
+  "link": (
+    $link,
+    $link-invert
+  )
+);
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
