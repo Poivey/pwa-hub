@@ -1,0 +1,5 @@
+name: backend
+runtime: nodejs
+description: serverless backend for pwa-hub
+template:
+  description: A minimal TypeScript Pulumi program
