@@ -4,6 +4,7 @@
         "@types/node": "latest"
     },
     "dependencies": {
+        "@pulumi/cloud-aws": "^0.16.2",
         "@pulumi/pulumi": "latest"
     }
 }
