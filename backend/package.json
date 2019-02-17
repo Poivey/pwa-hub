@@ -5,6 +5,7 @@
     },
     "dependencies": {
         "@pulumi/cloud-aws": "^0.16.2",
-        "@pulumi/pulumi": "latest"
+        "@pulumi/pulumi": "latest",
+        "@types/uuid": "^3.4.4"
     }
 }
