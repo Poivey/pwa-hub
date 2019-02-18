@@ -1,30 +1,9 @@
-import { Table } from '@pulumi/aws/dynamodb/';
-import { DynamoDB } from 'aws-sdk';
-import { v4 as uuid } from 'uuid';
-import { User } from '../entities/model/user';
-import { marshal, marshalString, unmarshal } from './util';
-
-const table = new Table('user', {
-  attributes: [{ name: 'id', type: 'S' }, { name: 'email', type: 'S' }],
-  hashKey: 'id',
-  writeCapacity: 1,
-  readCapacity: 1,
-  globalSecondaryIndexes: [
-    {
-      hashKey: 'email',
-      name: 'emailKeysOnly',
-      // est-ce qu'il ne vaut mieux pas faire avec ALL si de toutes façons
-      // on a déjà la table, et faire une projection sur la query du exist
-      // directement pour réduire la taille des données traitées ?
-      projectionType: 'KEYS_ONLY',
-      readCapacity: 1,
-      writeCapacity: 1,
-    },
-  ],
-  billingMode: 'PROVISIONED',
-})
-
-const getClient = (): DynamoDB.DocumentClient => new DynamoDB.DocumentClient()
+import { Table } from '@pulumi/aws/dynamodb/'
+import { DynamoDB } from 'aws-sdk'
+import { v4 as uuid } from 'uuid'
+import { User } from '../../entities/model/user'
+import { marshal, marshalString, unmarshal, getClient } from '../util'
+import { table } from './table'
 
 export const getById = async (id: string): Promise<User | null> => {
   const result: any = await getClient()

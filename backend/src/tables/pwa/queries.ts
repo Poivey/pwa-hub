@@ -1,57 +1,9 @@
-import { Table } from '@pulumi/aws/dynamodb/'
 import { DynamoDB } from 'aws-sdk'
 import { v4 as uuid } from 'uuid'
-import { Pwa } from '../entities/model/pwa'
-import { User } from '../entities/model/user'
-import { PwaSearchResults } from './model/pwaSearchResults'
-import * as userTable from './userTable'
-import { marshal, marshalString, unmarshal, unmarshalList } from './util'
-import { userUpdateTopic } from '../topics/tableSync'
-
-const table = new Table('pwa', {
-  attributes: [
-    { name: 'id', type: 'S' },
-    { name: 'url', type: 'S' },
-    { name: 'category', type: 'S' },
-    { name: 'creatorId', type: 'S' },
-    { name: 'popularity', type: 'N' },
-  ],
-  hashKey: 'id',
-  writeCapacity: 1,
-  readCapacity: 1,
-  globalSecondaryIndexes: [
-    {
-      hashKey: 'url',
-      name: 'urlKeysOnly',
-      // Il vaut mieux faire avec ALL/INCLUDE si quelque part on a besoin de toutes les infos
-      // et projection sur la query pour réduire la taille des données en lecture
-      projectionType: 'KEYS_ONLY',
-      readCapacity: 1,
-      writeCapacity: 1,
-    },
-    {
-      hashKey: 'category',
-      name: 'search',
-      projectionType: 'INCLUDE',
-      rangeKey: 'popularity', // TODO sorting on new pwa attribute "popularity, hidden from DAO, combinaison of comments and rate !"
-      nonKeyAttributes: ['id', 'name', 'iconUrl', 'creatorId', 'creatorUsername', 'reviewCount'],
-      readCapacity: 1,
-      writeCapacity: 1,
-    },
-    {
-      hashKey: 'creatorId',
-      name: 'creatorId',
-      projectionType: 'INCLUDE',
-      rangeKey: 'popularity',
-      nonKeyAttributes: ['id', 'name', 'iconUrl', 'devToken', 'reviewCount'],
-      readCapacity: 1,
-      writeCapacity: 1,
-    },
-  ],
-  billingMode: 'PROVISIONED',
-})
-
-const getClient = (): DynamoDB.DocumentClient => new DynamoDB.DocumentClient()
+import { Pwa } from '../../entities/model/pwa'
+import { PwaSearchResults } from '../resultModels/pwaSearchResults'
+import { getClient, marshal, marshalString, unmarshal, unmarshalList } from '../util'
+import { table } from './table'
 
 export const getById = async (id: string): Promise<Pwa | null> => {
   const result: any = await getClient()
@@ -217,35 +169,3 @@ const iterativeCategoryQuery = async (
   } while (!!lastEvaluatedKey && results.length < minResults)
   return { results, lastEvaluatedKey }
 }
-
-export const updateCreatorInfo = async (updateData: { id: string }): Promise<void> => {
-  const dynamoClient = getClient()
-  const pwaFromUser = await getByCreatorId(updateData.id, 'id')
-  console.log(`called update creator with creator id as : ${updateData.id}`)
-  if (pwaFromUser) {
-    const user: User | null = await userTable.getById(updateData.id)
-    if (user) {
-      for (const pwa of pwaFromUser) {
-        await dynamoClient
-          .update({
-            TableName: table.name.get(),
-            Key: { id: pwa.id },
-            ConditionExpression: 'attribute_exists(#id)',
-            UpdateExpression: 'SET #devToken = :v_devToken, #creatorUsername = :v_creatorUsername',
-            ExpressionAttributeNames: {
-              '#id': 'id',
-              '#devToken': 'devToken',
-              '#creatorUsername': 'creatorUsername',
-            },
-            ExpressionAttributeValues: {
-              ':v_devToken': marshalString(user.devToken),
-              ':v_creatorUsername': marshalString(user.username),
-            },
-          })
-          .promise()
-      }
-    }
-  }
-}
-
-userUpdateTopic.subscribe('onUserUpdate', updateCreatorInfo)

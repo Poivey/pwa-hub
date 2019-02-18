@@ -1,5 +1,5 @@
 import { s3 } from '@pulumi/aws'
-import { getObjectTags, deleteObject } from './util'
+import { deleteObject, getObjectTags } from './util'
 
 export const screenshotsBucket = new s3.Bucket('pwa-screenshots') // configurer, écriture : tout le monde, lecture : tout le monde, delete : que moi
 

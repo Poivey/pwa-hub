@@ -2,7 +2,7 @@ import { Request, Response } from '@pulumi/cloud'
 import { userToUserDTO } from '../entities/dto/userDTO'
 import { User } from '../entities/model/user'
 import * as newUserReq from '../entities/requests/newUser'
-import * as userTable from '../tables/userTable'
+import * as userTable from '../tables/user/queries'
 
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']

@@ -1,7 +1,7 @@
-import { API } from '@pulumi/cloud-aws';
-import * as devTokenController from './src/lambdas/devToken';
-import * as pwaController from './src/lambdas/pwa';
-import * as userController from './src/lambdas/user';
+import { API } from '@pulumi/cloud-aws'
+import * as devTokenController from './src/lambdas/devToken'
+import * as pwaController from './src/lambdas/pwa'
+import * as userController from './src/lambdas/user'
 
 const endpoint = new API('pwa-hub-endpoint')
 

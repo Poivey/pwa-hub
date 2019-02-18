@@ -2,7 +2,7 @@ import { Request, Response } from '@pulumi/cloud';
 import { v4 as uuid } from 'uuid';
 import { userToDevTokenDTO } from '../entities/dto/devTokenDTO';
 import { User } from '../entities/model/user';
-import * as userTable from '../tables/userTable';
+import * as userTable from '../tables/user/queries';
 import { userUpdateTopic } from '../topics/tableSync';
 
 export const get = async (req: Request, res: Response) => {

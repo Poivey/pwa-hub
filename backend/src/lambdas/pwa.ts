@@ -1,10 +1,10 @@
 import { BucketEvent } from '@pulumi/aws/s3'
 import { Request, Response } from '@pulumi/cloud'
-import { Pwa } from '../entities/model/pwa'
 import { pwaToPwaDTO } from '../entities/dto/pwaDTO'
+import { Pwa } from '../entities/model/pwa'
 import * as newPwaReq from '../entities/requests/newPwa'
 import * as pwaStorage from '../storage/pwaStorage'
-import * as pwaTable from '../tables/pwaTable'
+import * as pwaTable from '../tables/pwa/queries'
 
 // TODO use pwaDTO instead of pwa for user requests
 

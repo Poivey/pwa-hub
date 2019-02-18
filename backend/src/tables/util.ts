@@ -1,3 +1,7 @@
+import { DynamoDB } from 'aws-sdk'
+
+export const getClient = (): DynamoDB.DocumentClient => new DynamoDB.DocumentClient()
+
 const EMPTY_STRING_REPLACEMENT = 'empty_string'
 
 export const marshal = <T extends any>(obj: T): T => {
