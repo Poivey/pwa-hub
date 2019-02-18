@@ -1,8 +1,8 @@
-import { Table } from '@pulumi/aws/dynamodb/'
-import { User } from '../entities/model/user'
-import { v4 as uuid } from 'uuid'
-import { DynamoDB } from 'aws-sdk'
-import { marshal, unmarshal, marshalString } from './util'
+import { Table } from '@pulumi/aws/dynamodb/';
+import { DynamoDB } from 'aws-sdk';
+import { v4 as uuid } from 'uuid';
+import { User } from '../entities/model/user';
+import { marshal, marshalString, unmarshal } from './util';
 
 const table = new Table('user', {
   attributes: [{ name: 'id', type: 'S' }, { name: 'email', type: 'S' }],

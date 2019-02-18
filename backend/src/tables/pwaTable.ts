@@ -1,11 +1,12 @@
 import { Table } from '@pulumi/aws/dynamodb/'
-import { Pwa } from '../entities/model/pwa'
-import { v4 as uuid } from 'uuid'
 import { DynamoDB } from 'aws-sdk'
-import { PwaSearchResults } from './model/pwaSearchResults'
-import { marshal, unmarshal, marshalString, unmarshalList } from './util'
+import { v4 as uuid } from 'uuid'
+import { Pwa } from '../entities/model/pwa'
 import { User } from '../entities/model/user'
+import { PwaSearchResults } from './model/pwaSearchResults'
 import * as userTable from './userTable'
+import { marshal, marshalString, unmarshal, unmarshalList } from './util'
+import { userUpdateTopic } from '../topics/tableSync'
 
 const table = new Table('pwa', {
   attributes: [
@@ -217,11 +218,12 @@ const iterativeCategoryQuery = async (
   return { results, lastEvaluatedKey }
 }
 
-export const updateCreatorInfo = async (creatorId: string): Promise<void> => {
+export const updateCreatorInfo = async (updateData: { id: string }): Promise<void> => {
   const dynamoClient = getClient()
-  const pwaFromUser = await getByCreatorId(creatorId, 'id')
+  const pwaFromUser = await getByCreatorId(updateData.id, 'id')
+  console.log(`called update creator with creator id as : ${updateData.id}`)
   if (pwaFromUser) {
-    const user: User | null = await userTable.getById(creatorId)
+    const user: User | null = await userTable.getById(updateData.id)
     if (user) {
       for (const pwa of pwaFromUser) {
         await dynamoClient
@@ -245,3 +247,5 @@ export const updateCreatorInfo = async (creatorId: string): Promise<void> => {
     }
   }
 }
+
+userUpdateTopic.subscribe('onUserUpdate', updateCreatorInfo)

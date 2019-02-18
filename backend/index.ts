@@ -1,14 +1,13 @@
-import { API, Topic } from '@pulumi/cloud-aws'
-import * as pwaController from './src/lambdas/pwa'
-import * as userController from './src/lambdas/user'
-import * as devTokenController from './src/lambdas/devToken'
+import { API } from '@pulumi/cloud-aws';
+import * as devTokenController from './src/lambdas/devToken';
+import * as pwaController from './src/lambdas/pwa';
+import * as userController from './src/lambdas/user';
 
 const endpoint = new API('pwa-hub-endpoint')
 
 endpoint.get('/api/pwa/{id}', pwaController.get)
 endpoint.post('/api/pwa', pwaController.create) // (protégé)
 // endpoint.delete('/api/pwa/{id}/screenshots/{index}') // (devToken)
-// endpoint.post('/api/pwa/{id}/screenshots/order) // (devToken)
 // endpoint.delete('/api/pwa/{id}') // (devToken)
 endpoint.get('/api/search/pwa/{category}', pwaController.searchInCategory)
 endpoint.get('/api/search/pwa', pwaController.search)
