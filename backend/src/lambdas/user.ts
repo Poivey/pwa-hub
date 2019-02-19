@@ -3,13 +3,15 @@ import { userToUserDTO } from '../entities/dto/userDTO'
 import { User } from '../entities/model/user'
 import * as newUserReq from '../entities/requests/newUser'
 import * as userTable from '../tables/user/queries'
+import * as pwaTable from '../tables/pwa/queries'
 
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']
   try {
     const user: User | null = await userTable.getById(id)
     if (user) {
-      res.status(200).json(userToUserDTO(user)) // if requester is connected and is user : use userToUserDTOWithEmail
+      const pwas = await pwaTable.getByCreatorId(id)
+      res.status(200).json({ user: userToUserDTO(user), pwas: pwas }) // if requester is connected and is user : use userToUserDTOWithEmail
       console.log(`GET ${req.path} => success`)
     } else {
       res.status(404).end()

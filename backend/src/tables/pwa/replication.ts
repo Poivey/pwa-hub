@@ -1,5 +1,4 @@
 import { User } from '../../entities/model/user'
-import { userUpdateTopic } from '../../topics/tableSync'
 import * as userTable from '../user/queries'
 import { getClient, marshalString } from '../util'
 import { getByCreatorId } from './queries'

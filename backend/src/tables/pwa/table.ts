@@ -35,7 +35,7 @@ export const table = new Table('pwa', {
       name: 'creatorId',
       projectionType: 'INCLUDE',
       rangeKey: 'popularity',
-      nonKeyAttributes: ['id', 'name', 'iconUrl', 'devToken', 'reviewCount'],
+      nonKeyAttributes: ['id', 'name', 'iconUrl', 'reviewCount'],
       readCapacity: 1,
       writeCapacity: 1,
     },

@@ -17,7 +17,7 @@ export const getById = async (id: string): Promise<Pwa | null> => {
 
 export const getByCreatorId = async (
   creatorId: string,
-  ProjectionExpression: string
+  ProjectionExpression?: string
 ): Promise<Pwa[] | null> => {
   const result = await getClient()
     .query({
