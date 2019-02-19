@@ -94,18 +94,34 @@ export const addScreenshot = async (
 export const searchInAll = async (
   input: string,
   minResults: number,
-  startKey?: DynamoDB.Key
+  startKey?: string
 ): Promise<PwaSearchResults> => {
-  return iterativeScan(input, minResults, startKey)
+  if (!startKey) {
+    return iterativeScan(input, minResults)
+  } else {
+    let dynamoKey: DynamoDB.Key | undefined
+    try {
+      dynamoKey = JSON.parse(startKey)
+    } catch {}
+    return iterativeScan(input, minResults, dynamoKey)
+  }
 }
 
 export const searchInCategory = async (
   input: string,
   category: string,
   minResults: number,
-  startKey?: DynamoDB.Key
+  startKey?: string
 ): Promise<PwaSearchResults> => {
-  return iterativeCategoryQuery(input, category, minResults, startKey)
+  if (!startKey) {
+    return iterativeCategoryQuery(input, category, minResults)
+  } else {
+    let dynamoKey: DynamoDB.Key | undefined
+    try {
+      dynamoKey = JSON.parse(startKey)
+    } catch {}
+    return iterativeCategoryQuery(input, category, minResults, dynamoKey)
+  }
 }
 
 const iterativeScan = async (

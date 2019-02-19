@@ -6,8 +6,6 @@ import * as newPwaReq from '../entities/requests/newPwa'
 import * as pwaStorage from '../storage/pwaStorage'
 import * as pwaTable from '../tables/pwa/queries'
 
-// TODO use pwaDTO instead of pwa for user requests
-
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']
   try {
@@ -35,7 +33,6 @@ export const create = async (req: Request, res: Response) => {
   const pwa: Pwa = newPwaReq.toPwa(body)
 
   // TODO get user from dev token in header, if he doesn't exist : error
-  // Pour ça, GET POST sur user, creation des devTokens, créations de lambdas pour mettre à jour les données répliquées de la base
 
   // 3. get no pwa from pwa url
   if (await pwaTable.existByUrl(pwa.url)) {
@@ -60,9 +57,13 @@ export const create = async (req: Request, res: Response) => {
 
 export const search = async (req: Request, res: Response) => {
   const input = req.query.input
+  let startKey = req.query.startKey
   if (input && typeof input === 'string') {
+    if (typeof startKey !== 'string') {
+      startKey = ''
+    }
     try {
-      const searchResult = await pwaTable.searchInAll(input, 10)
+      const searchResult = await pwaTable.searchInAll(input, 10, startKey)
       res.status(200).json(searchResult)
     } catch (err) {
       res.status(500).end()
@@ -75,12 +76,16 @@ export const search = async (req: Request, res: Response) => {
 
 export const searchInCategory = async (req: Request, res: Response) => {
   let input = req.query.input
+  let startKey = req.query.startKey
   const category = req.params['category']
   if (!input || typeof input !== 'string') {
     input = ''
   }
+  if (typeof startKey !== 'string') {
+    startKey = ''
+  }
   try {
-    const searchResult = await pwaTable.searchInCategory(input, category, 10)
+    const searchResult = await pwaTable.searchInCategory(input, category, 10, startKey)
     res.status(200).json(searchResult)
   } catch (err) {
     res.status(500).end()

@@ -27,13 +27,13 @@ export const endpointUrl = endpoint.publish().url
 // PUT /api/users/ID
 
 // TODO commentaires
-// DynamoDB table comment, hashkey pwaID, comme ça on peut les récupérer facile :)
+// DynamoDB table comment, hashKey pwaID, comme ça on peut les récupérer facile :)
 // sortKey : date ? LSI : le plus utile ? aucune idée
 // ça va faire une COMPOSITE KEY, voir la doc, et ça sera cool
 // GSI : parentComment ! comme ça trop facile de faire des thread :)
 
 // TODO Cognito
-//      1. use @pululi/aws/cognito to authenticate users.
+//      1. use @pulumi/aws/cognito to authenticate users.
 //         we may not need a full user table depending on the user info we will have thought that
 //      2. use @pulumi/aws/apigateway to manage our endpoints with security where needed
 //         we may need to change our handler signatures

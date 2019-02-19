@@ -11,7 +11,7 @@ export const get = async (req: Request, res: Response) => {
     const user: User | null = await userTable.getById(id)
     if (user) {
       const pwas = await pwaTable.getByCreatorId(id)
-      res.status(200).json({ user: userToUserDTO(user), pwas: pwas }) // if requester is connected and is user : use userToUserDTOWithEmail
+      res.status(200).json({ user: userToUserDTO(user), pwas: pwas }) // if requester is user : use userToUserDTOWithEmail
       console.log(`GET ${req.path} => success`)
     } else {
       res.status(404).end()
