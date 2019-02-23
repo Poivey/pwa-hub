@@ -46,7 +46,7 @@ export const existByEmail = async (email: string): Promise<boolean> => {
 
 export const create = async (user: User): Promise<User> => {
   user.id = uuid()
-  user.accountCreationDate = new Date().toUTCString()
+  user.accountCreationDate = new Date().toISOString()
   await getClient()
     .put({
       TableName: table.name.get(),
@@ -81,7 +81,7 @@ export const updateDevToken = async (userId: string, devToken: string): Promise<
       },
       ExpressionAttributeValues: {
         ':v_devToken': marshalString(devToken),
-        ':v_devTokenLastUpdatedDate': new Date().toUTCString(),
+        ':v_devTokenLastUpdatedDate': new Date().toISOString(),
       },
     })
     .promise()

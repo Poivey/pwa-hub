@@ -52,7 +52,7 @@ export const existByUrl = async (url: string): Promise<boolean> => {
 
 export const create = async (pwa: Pwa): Promise<Pwa> => {
   pwa.id = uuid()
-  pwa.createdDate = new Date().toUTCString()
+  pwa.createdDate = new Date().toISOString()
   pwa.lastUpdatedDate = pwa.createdDate
   pwa.screenshots = []
   await getClient()
