@@ -1,6 +1,6 @@
 import { Table } from '@pulumi/aws/dynamodb'
-import { userUpdateTopic } from '../../topics/tableSync'
-import { updateCreatorInfo } from './replication'
+import { userUpdateTopic, reviewUpdateTopic } from '../../topics/tableSync'
+import { updateCreatorInfo, updateFromReviewEvent } from './replication'
 
 export const table = new Table('pwa', {
   attributes: [
@@ -25,7 +25,7 @@ export const table = new Table('pwa', {
       hashKey: 'category',
       name: 'search',
       projectionType: 'INCLUDE',
-      rangeKey: 'popularity', // TODO sorting on new pwa attribute "popularity, hidden from DAO, combinaison of comments and rate !"
+      rangeKey: 'popularity',
       nonKeyAttributes: ['id', 'name', 'iconUrl', 'creatorId', 'creatorUsername', 'reviewCount'],
       readCapacity: 1,
       writeCapacity: 1,
@@ -43,4 +43,5 @@ export const table = new Table('pwa', {
   billingMode: 'PROVISIONED',
 })
 
-userUpdateTopic.subscribe('onUserUpdate', updateCreatorInfo)
+userUpdateTopic.subscribe('updatePwaOnUserUpdate', updateCreatorInfo)
+reviewUpdateTopic.subscribe('updatePwaOnReviewUpdate', updateFromReviewEvent)

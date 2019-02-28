@@ -1,9 +1,9 @@
-import { Request, Response } from '@pulumi/cloud';
-import { v4 as uuid } from 'uuid';
-import { userToDevTokenDTO } from '../entities/dto/devTokenDTO';
-import { User } from '../entities/model/user';
-import * as userTable from '../tables/user/queries';
-import { userUpdateTopic } from '../topics/tableSync';
+import { Request, Response } from '@pulumi/cloud'
+import { v4 as uuid } from 'uuid'
+import { userToDevTokenDTO } from '../entities/dto/devTokenDTO'
+import { User } from '../entities/model/user'
+import * as userTable from '../tables/user/queries'
+import { userUpdateTopic } from '../topics/tableSync'
 
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']
@@ -26,8 +26,8 @@ export const generate = async (req: Request, res: Response) => {
   const id = req.params['id']
   try {
     const devToken = uuid()
-    await userTable.updateDevToken(id, devToken)
-    await userUpdateTopic.publish({ id })
+    const user = await userTable.updateDevToken(id, devToken)
+    await userUpdateTopic.publish({ user })
     res.status(201).json({ devToken })
     console.log(`POST ${req.path} => success`)
   } catch (err) {
@@ -44,8 +44,8 @@ export const generate = async (req: Request, res: Response) => {
 export const destroy = async (req: Request, res: Response) => {
   const id = req.params['id']
   try {
-    await userTable.updateDevToken(id, '')
-    await userUpdateTopic.publish({ id })
+    const user = await userTable.updateDevToken(id, '')
+    await userUpdateTopic.publish({ user })
     res.status(200).end()
     console.log(`DELETE ${req.path} => success`)
   } catch (err) {

@@ -17,10 +17,10 @@ export const marshalString = (str: string): string => {
   return str === '' ? EMPTY_STRING_REPLACEMENT : str
 }
 
-export const unmarshal = (obj: any): any => {
+export const unmarshal = <T extends any>(obj: T): T => {
   for (const key in obj) {
-    if (obj[key] === EMPTY_STRING_REPLACEMENT) {
-      obj[key] = ''
+    if (obj[key.valueOf()] === EMPTY_STRING_REPLACEMENT) {
+      obj[key.valueOf()] = ''
     }
   }
   return obj

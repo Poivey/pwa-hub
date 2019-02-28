@@ -1,8 +1,6 @@
-import { Table } from '@pulumi/aws/dynamodb/'
-import { DynamoDB } from 'aws-sdk'
 import { v4 as uuid } from 'uuid'
 import { User } from '../../entities/model/user'
-import { marshal, marshalString, unmarshal, getClient } from '../util'
+import { getClient, marshal, marshalString, unmarshal } from '../util'
 import { table } from './table'
 
 export const getById = async (id: string): Promise<User | null> => {
@@ -13,6 +11,17 @@ export const getById = async (id: string): Promise<User | null> => {
     })
     .promise()
   return unmarshal(result.Item)
+}
+
+export const getNameById = async (id: string): Promise<string> => {
+  const result = await getClient()
+    .get({
+      TableName: table.name.get(),
+      Key: { id },
+      ProjectionExpression: 'name',
+    })
+    .promise()
+  return result.Item && result.Item['name']
 }
 
 export const existById = async (id: string): Promise<boolean> => {
@@ -57,20 +66,24 @@ export const create = async (user: User): Promise<User> => {
 }
 
 export const destroy = async (id: string): Promise<boolean> => {
-  await getClient()
+  const result = await getClient()
     .delete({
       TableName: table.name.get(),
       Key: { id },
+      ReturnValues: 'ALL_OLD',
     })
     .promise()
-  return true // TODO with the res of delete call, return true or false
+  return !!result.Attributes
 }
 
-export const updateDevToken = async (userId: string, devToken: string): Promise<void> => {
-  await getClient()
+export const updateDevToken = async (userId: string, devToken: string): Promise<User> => {
+  const result: any = await getClient()
     .update({
       TableName: table.name.get(),
       Key: { id: userId },
+      ReturnValues: 'ALL_NEW',
+      // should it be ALL_OLD ? we already now what we've updated (except the precise date)
+      // the update method should be predictable anyway.
       ConditionExpression: 'attribute_exists(#id)',
       UpdateExpression:
         'SET #devToken = :v_devToken, #devTokenLastUpdatedDate = :v_devTokenLastUpdatedDate',
@@ -85,4 +98,5 @@ export const updateDevToken = async (userId: string, devToken: string): Promise<
       },
     })
     .promise()
+  return unmarshal(result.Attributes)
 }

@@ -6,8 +6,6 @@ export interface NewPwa {
   version: string
   description: string
   category: string
-  popularity: string // FIXME remove when computed !
-  reviewCount: string // FIXME remove when computed !
 }
 
 export const isValid = (newPwa: NewPwa): boolean => {
@@ -17,9 +15,7 @@ export const isValid = (newPwa: NewPwa): boolean => {
     newPwa.url &&
     newPwa.version &&
     newPwa.description &&
-    newPwa.category &&
-    newPwa.popularity &&
-    newPwa.reviewCount
+    newPwa.category
   )
 }
 
@@ -33,8 +29,9 @@ export const toPwa = (newPwa: NewPwa): Pwa => {
     description: newPwa.description,
     screenshots: [],
     category: newPwa.category,
-    popularity: newPwa.popularity, // FIXME
-    reviewCount: newPwa.reviewCount, // FIXME
+    popularity: 0,
+    reviewCount: 0,
+    rate: 0,
     createdDate: '',
     lastUpdatedDate: '',
     creatorId: '',

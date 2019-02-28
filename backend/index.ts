@@ -2,35 +2,34 @@ import { API } from '@pulumi/cloud-aws'
 import * as devTokenController from './src/lambdas/devToken'
 import * as pwaController from './src/lambdas/pwa'
 import * as userController from './src/lambdas/user'
+import * as reviewController from './src/lambdas/review'
 
 const endpoint = new API('pwa-hub-endpoint')
 
+endpoint.post('/api/pwa/{id}/reviews', reviewController.create) // auth
+endpoint.put('/api/pwa/{id}/reviews', reviewController.update) // auth
+endpoint.get('/api/pwa/{id}/reviews', reviewController.getBatch)
 endpoint.get('/api/pwa/{id}', pwaController.get)
-endpoint.post('/api/pwa', pwaController.create) // (protégé)
-// endpoint.delete('/api/pwa/{id}/screenshots/{index}') // (devToken)
-// endpoint.delete('/api/pwa/{id}') // (devToken)
+endpoint.post('/api/pwa', pwaController.create) // devToken
+
 endpoint.get('/api/search/pwa/{category}', pwaController.searchInCategory)
 endpoint.get('/api/search/pwa', pwaController.search)
 
-endpoint.post('/api/users/{id}/devtoken', devTokenController.generate) // générer un nouveau devToken (protégé)
-endpoint.get('/api/users/{id}/devtoken', devTokenController.get) // récupérer le devToken d'un user (protégé)
-endpoint.delete('/api/users/{id}/devtoken', devTokenController.destroy) // supprimer le devToken (protégé)
-endpoint.get('/api/users/{id}', userController.get) // get user info
-endpoint.post('/api/users', userController.create) // create a new user :) - temporary, users should be created by cognito
-endpoint.delete('/api/users/{id}', userController.destroy) // supprimer le user (protégé)
+endpoint.post('/api/users/{id}/devtoken', devTokenController.generate) // auth
+endpoint.get('/api/users/{id}/devtoken', devTokenController.get) // auth
+endpoint.delete('/api/users/{id}/devtoken', devTokenController.destroy) // auth
+endpoint.get('/api/users/{id}', userController.get)
+endpoint.delete('/api/users/{id}', userController.destroy) // auth
+endpoint.post('/api/users', userController.create) // temporary, ideally users should be created by cognito
 
 export const endpointUrl = endpoint.publish().url
 
-// TODO dans l'immédiat
-// DELETE /api/users/ID (et les pwa associées)
+// TODO soon
+// DELETE /api/users/ID (and created pwas)
 // DELETE /api/pwa/ID
-// PUT /api/users/ID
-
-// TODO commentaires
-// DynamoDB table comment, hashKey pwaID, comme ça on peut les récupérer facile :)
-// sortKey : date ? LSI : le plus utile ? aucune idée
-// ça va faire une COMPOSITE KEY, voir la doc, et ça sera cool
-// GSI : parentComment ! comme ça trop facile de faire des thread :)
+// DELETE /api/pwa/ID/screenshots/INDEX
+// PUT for user and pwa info
+// Handle user and pwa 'avatar'
 
 // TODO Cognito
 //      1. use @pulumi/aws/cognito to authenticate users.

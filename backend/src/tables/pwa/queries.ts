@@ -15,10 +15,34 @@ export const getById = async (id: string): Promise<Pwa | null> => {
   return unmarshal(result.Item)
 }
 
+export const existById = async (id: string): Promise<boolean> => {
+  const result = await getClient()
+    .query({
+      TableName: table.name.get(),
+      Select: 'COUNT',
+      KeyConditionExpression: '#id = :v_id',
+      ExpressionAttributeNames: { '#id': 'id' },
+      ExpressionAttributeValues: { ':v_id': id },
+    })
+    .promise()
+  return result.Count != 0
+}
+
+export const getNameById = async (id: string): Promise<string> => {
+  const result = await getClient()
+    .get({
+      TableName: table.name.get(),
+      Key: { id },
+      ProjectionExpression: 'name',
+    })
+    .promise()
+  return result.Item && result.Item['name']
+}
+
 export const getByCreatorId = async (
   creatorId: string,
   ProjectionExpression?: string
-): Promise<Pwa[] | null> => {
+): Promise<Pwa[] | undefined> => {
   const result = await getClient()
     .query({
       TableName: table.name.get(),
@@ -29,11 +53,7 @@ export const getByCreatorId = async (
       ProjectionExpression: ProjectionExpression,
     })
     .promise()
-  if (result.Items) {
-    return unmarshalList(result.Items)
-  } else {
-    return null
-  }
+  return result.Items && unmarshalList(result.Items)
 }
 
 export const existByUrl = async (url: string): Promise<boolean> => {
