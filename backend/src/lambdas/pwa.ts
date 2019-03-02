@@ -5,11 +5,13 @@ import { Pwa } from '../entities/model/pwa'
 import * as newPwaReq from '../entities/requests/newPwa'
 import * as pwaStorage from '../storage/pwaStorage'
 import * as pwaTable from '../tables/pwa/queries'
+import * as userTable from '../tables/user/queries'
+import { User } from '../entities/model/user'
 
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']
   try {
-    const pwa: Pwa | null = await pwaTable.getById(id)
+    const pwa: Pwa | undefined = await pwaTable.getById(id)
     if (pwa) {
       res.status(200).json(pwaToPwaDTO(pwa))
       console.log(`GET ${req.path} => success`)
@@ -25,22 +27,29 @@ export const get = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   const body: newPwaReq.NewPwa = JSON.parse(req.body.toString())
+  let devToken = req.headers && req.headers.devtoken
   if (!newPwaReq.isValid(body)) {
     res.status(400).json(`Invalid request`)
     return
   }
-
+  if (typeof devToken !== 'string') {
+    devToken = ''
+  }
   const pwa: Pwa = newPwaReq.toPwa(body)
-
-  // TODO get user from dev token in header, if he doesn't exist : error
-
-  // 3. get no pwa from pwa url
+  const user: User | undefined = await userTable.getByDevToken(devToken)
+  if (!user) {
+    res.status(400).json(`invalid devToken`)
+    return
+  } else {
+    pwa.devToken = user.devToken
+    pwa.creatorId = user.id
+    pwa.creatorUsername = user.username
+  }
   if (await pwaTable.existByUrl(pwa.url)) {
     res.status(409).json(`pwa with url ${pwa.url} already exist !`)
     console.log(`POST ${req.path} => 409 conflict, pwa : ${pwa.url} already exist`)
     return
   }
-
   try {
     const saved: Pwa = await pwaTable.create(pwa)
     res
@@ -56,8 +65,8 @@ export const create = async (req: Request, res: Response) => {
 }
 
 export const search = async (req: Request, res: Response) => {
-  const input = req.query.input
-  let startKey = req.query.startKey
+  const input = req.query && req.query.input
+  let startKey = req.query && req.query.startKey
   if (input && typeof input === 'string') {
     if (typeof startKey !== 'string') {
       startKey = ''
@@ -75,8 +84,8 @@ export const search = async (req: Request, res: Response) => {
 }
 
 export const searchInCategory = async (req: Request, res: Response) => {
-  let input = req.query.input
-  let startKey = req.query.startKey
+  let input = req.query && req.query.input
+  let startKey = req.query && req.query.startKey
   const category = req.params['category']
   if (!input || typeof input !== 'string') {
     input = ''

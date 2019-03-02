@@ -40,7 +40,7 @@ export const create = async (review: Review): Promise<Review> => {
       Item: marshal(review),
     })
     .promise()
-  return review
+  return unmarshal(review)
 }
 
 export const parseRate = (rate: number): number => {

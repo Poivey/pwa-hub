@@ -62,14 +62,14 @@ export const updateFromReviewEvent = async (event: {
 }
 
 const addReviewToPwa = (pwa: Pwa, reviewRate: number): Pwa => {
-  pwa.rate = (pwa.rate * pwa.reviewCount + reviewRate) / pwa.reviewCount + 1
+  pwa.rate = (pwa.rate * pwa.reviewCount + reviewRate) / (pwa.reviewCount + 1)
   pwa.reviewCount += 1
   pwa.popularity = computePopularity(pwa.rate, pwa.reviewCount)
   return pwa
 }
 const removeReviewFromPwa = (pwa: Pwa, reviewRate: number): Pwa => {
   if (pwa.reviewCount > 1) {
-    pwa.rate = (pwa.rate * pwa.reviewCount - reviewRate) / pwa.reviewCount - 1
+    pwa.rate = (pwa.rate * pwa.reviewCount - reviewRate) / (pwa.reviewCount - 1)
     pwa.reviewCount -= 1
   }
   pwa.popularity = computePopularity(pwa.rate, pwa.reviewCount)

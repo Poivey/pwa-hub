@@ -3,7 +3,7 @@ import { User } from '../../entities/model/user'
 import { getClient, marshal, marshalString, unmarshal } from '../util'
 import { table } from './table'
 
-export const getById = async (id: string): Promise<User | null> => {
+export const getById = async (id: string): Promise<User | undefined> => {
   const result: any = await getClient()
     .get({
       TableName: table.name.get(),
@@ -18,10 +18,30 @@ export const getNameById = async (id: string): Promise<string> => {
     .get({
       TableName: table.name.get(),
       Key: { id },
-      ProjectionExpression: 'name',
+      ProjectionExpression: '#username',
+      ExpressionAttributeNames: {
+        '#username': 'username',
+      },
     })
     .promise()
-  return result.Item && result.Item['name']
+  return result.Item && result.Item['username']
+}
+
+export const getByDevToken = async (devToken: string): Promise<User | undefined> => {
+  if (!devToken) {
+    return
+  }
+  const result: any = await getClient()
+    .query({
+      TableName: table.name.get(),
+      IndexName: 'devTokenIndex',
+      Limit: 1,
+      KeyConditionExpression: '#devToken = :v_devToken',
+      ExpressionAttributeNames: { '#devToken': 'devToken' },
+      ExpressionAttributeValues: { ':v_devToken': devToken },
+    })
+    .promise()
+  return result.Items && result.Items.length > 0 && unmarshal(result.Items[0])
 }
 
 export const existById = async (id: string): Promise<boolean> => {
@@ -62,7 +82,7 @@ export const create = async (user: User): Promise<User> => {
       Item: marshal(user),
     })
     .promise()
-  return user
+  return unmarshal(user)
 }
 
 export const destroy = async (id: string): Promise<boolean> => {

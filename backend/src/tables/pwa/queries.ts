@@ -5,7 +5,7 @@ import { PwaSearchResults } from '../resultModels/pwaSearchResults'
 import { getClient, marshal, marshalString, unmarshal, unmarshalList } from '../util'
 import { table } from './table'
 
-export const getById = async (id: string): Promise<Pwa | null> => {
+export const getById = async (id: string): Promise<Pwa | undefined> => {
   const result: any = await getClient()
     .get({
       TableName: table.name.get(),
@@ -33,7 +33,10 @@ export const getNameById = async (id: string): Promise<string> => {
     .get({
       TableName: table.name.get(),
       Key: { id },
-      ProjectionExpression: 'name',
+      ProjectionExpression: '#name',
+      ExpressionAttributeNames: {
+        '#name': 'name',
+      },
     })
     .promise()
   return result.Item && result.Item['name']
@@ -81,7 +84,7 @@ export const create = async (pwa: Pwa): Promise<Pwa> => {
       Item: marshal(pwa),
     })
     .promise()
-  return pwa
+  return unmarshal(pwa)
 }
 
 export const addScreenshot = async (

@@ -10,6 +10,7 @@ export interface PwaDTO {
   screenshots: string[]
   category: string
   rate: number
+  reviewCount: number
   // tags: string[]
   createdDate: string
   lastUpdatedDate: string
@@ -28,6 +29,7 @@ export const pwaToPwaDTO = (pwa: Pwa): PwaDTO => {
     screenshots: pwa.screenshots,
     category: pwa.category,
     rate: pwa.rate,
+    reviewCount: pwa.reviewCount,
     createdDate: pwa.createdDate,
     lastUpdatedDate: pwa.lastUpdatedDate,
     creatorId: pwa.creatorId,

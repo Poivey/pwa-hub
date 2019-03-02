@@ -68,7 +68,7 @@ export const update = async (req: Request, res: Response) => {
 }
 
 export const getBatch = async (req: Request, res: Response) => {
-  let startKey = req.query.startKey
+  let startKey = req.query && req.query.startKey
   const pwaId = req.params['id']
   if (typeof startKey !== 'string') {
     startKey = ''
