@@ -8,7 +8,7 @@ import * as pwaTable from '../tables/pwa/queries'
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']
   try {
-    const user: User | null = await userTable.getById(id)
+    const user: User | undefined = await userTable.getById(id)
     if (user) {
       const pwas = await pwaTable.getByCreatorId(id)
       res.status(200).json({ user: userToUserDTO(user), pwas: pwas }) // if requester is user : use userToUserDTOWithEmail
