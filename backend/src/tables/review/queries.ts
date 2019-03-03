@@ -107,6 +107,7 @@ export const getByPwaIdPaginated = async (
       IndexName: 'pwaKeyCreationDateOrdered',
       ExclusiveStartKey: dynamoStartKey,
       Limit: 10,
+      ScanIndexForward: false,
       KeyConditionExpression: '#pwaId = :v_pwaId',
       ExpressionAttributeNames: { '#pwaId': 'pwaId' },
       ExpressionAttributeValues: { ':v_pwaId': pwaId },
