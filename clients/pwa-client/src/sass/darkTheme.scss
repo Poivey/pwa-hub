@@ -1,0 +1,52 @@
+:root {
+  --black: hsl(0, 0%, 4%);
+  --black-bis: hsl(0, 0%, 7%);
+  --black-ter: hsl(0, 0%, 14%);
+
+  --grey-darker: hsl(0, 0%, 21%);
+  --grey-dark: hsl(0, 0%, 29%);
+  --grey: hsl(0, 0%, 48%);
+  --grey-light: hsl(0, 0%, 71%);
+  --grey-lighter: hsl(0, 0%, 86%);
+
+  --white-ter: hsl(0, 0%, 96%);
+  --white-bis: hsl(0, 0%, 98%);
+  --white: hsl(0, 0%, 100%);
+}
+.dark-theme {
+  .box {
+    background-color: var(--black-bis);
+    box-shadow: 0 2px 3px rgba(hsl(0, 0%, 100%), 0.1), 0 0 0 1px rgba(hsl(0, 0%, 100%), 0.1);
+    color: var(--white-ter);
+  }
+  .control {
+    .input,
+    .input::placeholder,
+    select {
+      background-color: var(--grey-darker);
+      border-color: var(--grey-light);
+      color: var(--grey-light);
+    }
+    .input:hover,
+    .input:focus,
+    select:hover,
+    select:focus {
+      background-color: var(--grey-dark);
+      border-color: var(--grey-lighter);
+      color: var(--white-ter);
+    }
+  }
+  .body,
+  .section {
+    background-color: var(--black);
+    color: var(--white-ter);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--white-ter);
+  }
+}

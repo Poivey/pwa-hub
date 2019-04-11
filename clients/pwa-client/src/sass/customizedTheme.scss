@@ -1,59 +1,51 @@
 // Import material design icons (https://materialdesignicons.com)
-@import "~@mdi/font/css/materialdesignicons.min.css";
+@import '~@mdi/font/css/materialdesignicons.min.css';
+// Custom font
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+$family-sans-serif: 'Fira Sans', BlinkMacSystemFont, -apple-system, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Droid Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 
 // Import Bulma's core
-@import "~bulma/sass/utilities/_all";
-// Set up color theme
-// help -> https://bulma.io/documentation/overview/colors/
-$primary: $primary;
-$primary-invert: $primary-invert;
+@import '~bulma/sass/utilities/_all';
 
-$info: $info;
-$info-invert: $info-invert;
-
-$success: $success;
-$success-invert: $success-invert;
-
-$warning: $warning;
-$warning-invert: $warning-invert;
-
-$danger: $danger;
-$danger-invert: $danger-invert;
-
-$link: $link;
-$link-invert: $link-invert;
-
-// Additional colors
-$twitter: #4099ff;
-$twitter-invert: findColorInvert($twitter);
-
-// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$primary: #ff6f59;
+$info: #006494;
+$link: #4392f1;
+$success: #359340;
+$warning: #ffca3a;
+$danger: #d30d0d;
+// Setup $colors to use as bulma classes (e.g. 'is-primary')
 $colors: (
-  "primary": (
+  'primary': (
     $primary,
-    $primary-invert
+    findColorInvert($primary),
   ),
-  "info": (
+  'info': (
     $info,
-    $info-invert
+    findColorInvert($info),
   ),
-  "success": (
+  'success': (
     $success,
-    $success-invert
+    findColorInvert($success),
   ),
-  "warning": (
+  'warning': (
     $warning,
-    $warning-invert
+    findColorInvert($warning),
   ),
-  "danger": (
+  'danger': (
     $danger,
-    $danger-invert
+    findColorInvert($danger),
   ),
-  "link": (
+  'link': (
     $link,
-    $link-invert
-  )
+    findColorInvert($link),
+  ),
+  'yellow': (
+    $yellow,
+    findColorInvert($yellow),
+  ),
 );
+
 // Import Bulma and Buefy styles
-@import "~bulma";
-@import "~buefy/src/scss/buefy";
+@import '~bulma';
+@import '~buefy/src/scss/buefy';

@@ -8,7 +8,7 @@ import { userUpdateTopic } from '../topics/tableSync'
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']
   try {
-    const user: User | null = await userTable.getById(id)
+    const user: User | undefined = await userTable.getById(id)
     if (user) {
       res.status(200).json(userToDevTokenDTO(user))
       console.log(`GET ${req.path} => success`)

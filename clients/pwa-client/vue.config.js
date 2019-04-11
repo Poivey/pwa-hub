@@ -4,12 +4,14 @@ module.exports = {
       locale: 'en',
       fallbackLocale: 'en',
       localeDir: 'locales',
-      enableInSFC: false
-    }
+      enableInSFC: false,
+    },
   },
 
   pwa: {
     name: 'pwa-hub',
-    workboxPluginMode: 'InjectManifest'
-  }
+    workboxPluginMode: 'InjectManifest',
+  },
+
+  lintOnSave: undefined,
 }
