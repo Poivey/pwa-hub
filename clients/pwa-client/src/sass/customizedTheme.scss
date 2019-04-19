@@ -8,12 +8,13 @@ $family-sans-serif: 'Fira Sans', BlinkMacSystemFont, -apple-system, 'Segoe UI', 
 // Import Bulma's core
 @import '~bulma/sass/utilities/_all';
 
-$primary: #ff6f59;
-$info: #006494;
-$link: #4392f1;
-$success: #359340;
-$warning: #ffca3a;
+$primary: #f46036;
+$info: #9dbbd6;
+$link: #5b85aa;
+$success: #1e7d20;
+$warning: #e6af2e;
 $danger: #d30d0d;
+
 // Setup $colors to use as bulma classes (e.g. 'is-primary')
 $colors: (
   'primary': (

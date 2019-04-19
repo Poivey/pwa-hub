@@ -57,7 +57,7 @@ export default {
   align-items: center;
 }
 .smallDescription {
-  height: 3.3rem;
+  height: 3.2rem;
   overflow: hidden;
   text-overflow: ellipsis;
 }

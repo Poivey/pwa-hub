@@ -19,34 +19,58 @@
     box-shadow: 0 2px 3px rgba(hsl(0, 0%, 100%), 0.1), 0 0 0 1px rgba(hsl(0, 0%, 100%), 0.1);
     color: var(--white-ter);
   }
+
   .control {
     .input,
     .input::placeholder,
-    select {
+    select,
+    textarea,
+    textarea::placeholder {
       background-color: var(--grey-darker);
-      border-color: var(--grey-light);
+      border-color: var(--grey);
       color: var(--grey-light);
     }
     .input:hover,
+    .input:hover::placeholder,
     .input:focus,
+    .input:focus::placeholder,
     select:hover,
-    select:focus {
+    select:focus,
+    textarea:hover,
+    textarea:hover::placeholder,
+    textarea:focus,
+    textarea:focus::placeholder {
       background-color: var(--grey-dark);
-      border-color: var(--grey-lighter);
+      border-color: var(--grey-light);
       color: var(--white-ter);
     }
   }
+
+  .tabs.is-toggle li:not(.is-active) {
+    a {
+      color: var(--grey-lighter);
+      border-color: var(--grey);
+    }
+    a:hover {
+      color: var(--white-ter);
+      background-color: var(--grey-dark);
+      border-color: var(--grey-light);
+    }
+  }
+
   .body,
   .section {
     background-color: var(--black);
     color: var(--white-ter);
   }
+
   h1,
   h2,
   h3,
   h4,
   h5,
-  h6 {
+  h6,
+  label {
     color: var(--white-ter);
   }
 }

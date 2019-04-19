@@ -50,6 +50,9 @@ export default {
   overflow: auto;
   height: 300px;
 }
+.carousel-item {
+  height: 100%;
+}
 .carousel-item + .carousel-item {
   margin-left: 0.25rem;
 }

@@ -2,8 +2,8 @@
   <div class="is-flex">
     <div>Category :</div>
     <b-field class="ml-2">
-      <b-select v-model="category" placeholder="Country" size="is-small" icon="filter">
-        <option value="all">all categories</option>
+      <b-select v-model="category" size="is-small" icon="filter">
+        <option selected value="all">all categories</option>
         <option value="productivity">productivity</option>
         <option value="games">games</option>
         <option value="social">social</option>

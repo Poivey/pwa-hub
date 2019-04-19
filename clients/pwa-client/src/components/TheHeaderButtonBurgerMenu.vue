@@ -8,15 +8,21 @@
       <p class="mt-2">Username</p>
       <p class="mt-2 has-text-grey-light">user.name@gmail.com</p>
       <hr class="divider-small" />
-      <b-switch v-model="isDarkThemed" class="mt-2">
+      <b-switch v-model="isDarkThemed">
         Dark mode <b-icon icon="weather-night" size="is-small" />
       </b-switch>
+      <hr class="divider-small" />
+      <ThePwaInformationsHelpButton />
     </div>
   </div>
 </template>
 
 <script>
+import ThePwaInformationsHelpButton from '@/components/ThePwaInformationsHelpButton.vue'
 export default {
+  components: {
+    ThePwaInformationsHelpButton,
+  },
   computed: {
     isDarkThemed: {
       get() {

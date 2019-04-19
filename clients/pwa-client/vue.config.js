@@ -9,8 +9,9 @@ module.exports = {
   },
 
   pwa: {
-    name: 'pwa-hub',
-    workboxPluginMode: 'InjectManifest',
+    name: 'pwa-hub-balloon',
+    themeColor: '#f46036',
+    msTileColor: '#0a0a0A'
   },
 
   lintOnSave: undefined,

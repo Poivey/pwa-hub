@@ -9,7 +9,7 @@
       <div class="is-flex main-informations">
         <p>Twitter</p>
         <p class="has-text-grey-light">creator name.inc</p>
-        <p class="has-text-grey-light">version 1.0.3</p>
+        <p class="has-text-grey-light">registered on 10/06/2019</p>
         <PwaDetailsMainInformationsRating />
       </div>
     </div>
