@@ -4,7 +4,7 @@
       <b-icon icon="account-edit" />
       <span>Edit your profile</span>
     </a>
-    <b-modal class="side-menu-modal" :active.sync="isUpdateUserModalEnabled" :width="'50%'">
+    <b-modal class="side-menu-modal" :active.sync="isUpdateUserModalEnabled">
       <div class="box">
         <div class="user-update-form mb-3">
           <h3 class="title is-4">

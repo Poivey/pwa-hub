@@ -13,11 +13,6 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: StoreHome,
-    },
-    {
       path: '/search',
       name: 'search',
       component: StoreSearch,
@@ -31,6 +26,11 @@ export default new Router({
       path: '/user/:id',
       name: 'user',
       component: UserDetails,
+    },
+    {
+      path: '/*',
+      name: 'home',
+      component: StoreHome,
     },
   ],
 })

@@ -8,6 +8,7 @@ const mime = require('mime')
 let siteBucket = new aws.s3.Bucket('balloon', {
   website: {
     indexDocument: 'index.html',
+    errorDocument: 'index.html',
   },
 })
 
@@ -57,9 +58,3 @@ let bucketPolicy = new aws.s3.BucketPolicy('bucketPolicy', {
 // Stack exports
 exports.bucketName = siteBucket.bucket
 exports.websiteUrl = siteBucket.websiteEndpoint
-
-// // Create an AWS resource (S3 Bucket)
-// const bucket = new aws.s3.Bucket("my-bucket");
-
-// // Export the name of the bucket
-// exports.bucketName = bucket.id;
