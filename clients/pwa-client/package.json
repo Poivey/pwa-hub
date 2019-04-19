@@ -1,45 +1,10 @@
 {
-  "name": "pwa-client",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "@mdi/font": "^3.5.95",
-    "axios": "^0.18.0",
-    "buefy": "^0.7.3",
-    "lodash": "^4.17.11",
-    "node-sass": "^4.11.0",
-    "register-service-worker": "^1.6.2",
-    "sass-loader": "^7.1.0",
-    "tslib": "^1.9.3",
-    "vue": "^2.6.8",
-    "vue-i18n": "^8.8.2",
-    "vue-router": "^3.0.2",
-    "vuex": "^3.1.0"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.4.1",
-    "@vue/cli-plugin-eslint": "^3.4.1",
-    "@vue/cli-plugin-pwa": "^3.4.1",
-    "@vue/cli-service": "^3.4.1",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.15.0",
-    "eslint-plugin-vue": "^5.2.2",
-    "vue-cli-plugin-i18n": "^0.5.2",
-    "vue-template-compiler": "^2.6.8"
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
+    "name": "aws-javascript",
+    "main": "index.js",
+    "dependencies": {
+        "@pulumi/aws": "latest",
+        "@pulumi/awsx": "latest",
+        "@pulumi/pulumi": "latest",
+        "mime": "^2.4.2"
     }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
 }
