@@ -5,9 +5,9 @@
         <div class="column is-4-desktop is-flex v-center-content">
           <PwaDetailsMainInformations class="mb-3" />
           <PwaDetailsButtonUrl class="mb-3" />
-          <div v-if="true" class="is-inline-flex">
-            <PwaDetailsUpdateInformations />
-            <PwaDetailsUpdatePictures class="ml-2" />
+          <div v-if="true">
+            <PwaDetailsUpdateInformations class="mb-3" />
+            <PwaDetailsUpdatePictures />
           </div>
         </div>
         <div class="column is-flex v-center-content">

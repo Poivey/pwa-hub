@@ -1,13 +1,20 @@
 <template>
-  <div>
-    <a class="button button-burger-menu is-primary is-inverted is-outlined" @click="openSideMenu()">
-      <b-icon icon="menu" />
-    </a>
-    <router-link to="/">
-      <a class="button button-burger-menu is-primary is-inverted is-outlined">
-        <b-icon icon="home" />
+  <div class="is-flex">
+    <div>
+      <a
+        class="button button-burger-menu is-primary is-inverted is-outlined"
+        @click="openSideMenu()"
+      >
+        <b-icon icon="menu" />
       </a>
-    </router-link>
+    </div>
+    <div>
+      <router-link to="/">
+        <a class="button button-burger-menu is-primary is-inverted is-outlined">
+          <b-icon icon="home" />
+        </a>
+      </router-link>
+    </div>
 
     <b-modal
       class="side-menu-modal"
