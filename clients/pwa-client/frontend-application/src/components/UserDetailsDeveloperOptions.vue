@@ -1,10 +1,10 @@
 <template>
-  <div class="is-flex vertical-center">
+  <div class="is-flex v-center-content">
     <b-switch v-model="isDeveloperModeEnabled">
       Enable developer mode <b-icon icon="wrench" size="is-small" />
     </b-switch>
     <div v-if="isDeveloperModeEnabled">
-      <div class="is-flex vertical-center mt-3">
+      <div class="is-flex v-center-content mt-3">
         <h3 class="title">Developer token</h3>
         <div class="box">ffaa4b9d-cb74-4b01-ab19-b3223aa31077</div>
         <div>
@@ -12,7 +12,7 @@
           <a class="button is-danger ml-2">Delete this token</a>
         </div>
       </div>
-      <div class="is-flex vertical-center mt-3">
+      <div class="is-flex v-center-content mt-3">
         <h3 class="title">Register a new PWA</h3>
         <div class="new-pwa-form">
           <b-field label="PWA name">
@@ -52,10 +52,6 @@ export default {
 </script>
 
 <style scoped>
-.vertical-center {
-  flex-direction: column;
-  align-items: center;
-}
 .new-pwa-form {
   width: 100%;
 }

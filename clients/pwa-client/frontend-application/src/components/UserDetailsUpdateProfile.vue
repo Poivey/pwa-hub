@@ -1,5 +1,5 @@
 <template>
-  <div class="is-flex vertical-center">
+  <div class="is-flex v-center-content">
     <a class="button is-link" @click="openUpdateUserModal()">
       <b-icon icon="account-edit" />
       <span>Edit your profile</span>
@@ -59,8 +59,4 @@ export default {
 </script>
 
 <style scoped>
-.vertical-center {
-  flex-direction: column;
-  align-items: center;
-}
 </style>

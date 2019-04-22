@@ -21,6 +21,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import './sass/utilityClasses';
 @import './sass/customizedTheme';
 @import './sass/darkTheme';
 @import './sass/spacing';

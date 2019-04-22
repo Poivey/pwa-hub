@@ -1,5 +1,5 @@
 <template>
-  <div class="header-wrapper">
+  <div class="is-flex">
     <div>
       <TheHeaderButtons />
     </div>
@@ -22,9 +22,6 @@ export default {
 </script>
 
 <style scoped>
-.header-wrapper {
-  display: flex;
-}
 .search-bar-wrapper {
   flex-grow: 1;
 }

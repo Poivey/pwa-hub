@@ -6,7 +6,7 @@
       </figure>
     </div>
     <div class="column ml-3">
-      <div class="is-flex main-informations">
+      <div class="is-flex flex-column main-informations">
         <p>Twitter</p>
         <router-link to="/user/cc">
           <p class="has-text-link">creator name.inc</p>
@@ -32,7 +32,6 @@ export default {
   width: 20.5rem;
 }
 .main-informations {
-  flex-direction: column;
   justify-content: space-between;
   height: 100%;
 }

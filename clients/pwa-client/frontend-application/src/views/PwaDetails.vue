@@ -2,11 +2,11 @@
   <section class="section pt-4">
     <div class="container">
       <div class="columns is-desktop">
-        <div class="column is-4-desktop is-flex center-content">
+        <div class="column is-4-desktop is-flex v-center-content">
           <PwaDetailsMainInformations class="mb-3" />
           <PwaDetailsButtonUrl class="mb-3" />
         </div>
-        <div class="column is-flex center-content">
+        <div class="column is-flex v-center-content">
           <PwaDetailsCarouselScreenshots class="mb-3" />
           <PwaDetailsDescription class="mb-3" />
           <PwaDetailsReviews />
@@ -39,8 +39,4 @@ export default {
 </script>
 
 <style scoped>
-.center-content {
-  flex-direction: column;
-  align-items: center;
-}
 </style>

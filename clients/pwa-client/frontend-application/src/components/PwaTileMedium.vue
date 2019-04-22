@@ -7,7 +7,7 @@
         </figure>
       </div>
       <div class="column ml-2">
-        <div class="pwa-info">
+        <div class="is-flex flex-column pwa-info">
           <div class="is-size-7 nowrap">Name of the pwaName of the pwaName of the pwa</div>
           <div class="is-size-7 nowrap has-text-grey-light">creator name.inc</div>
           <div class="is-size-7 nowrap has-text-grey-light">category</div>
@@ -72,8 +72,6 @@ export default {
 .pwa-info {
   width: 200px;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
 }
 .nowrap {

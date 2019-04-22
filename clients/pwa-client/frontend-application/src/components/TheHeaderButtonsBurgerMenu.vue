@@ -1,6 +1,6 @@
 <template>
   <div class="box side-menu-wrapper">
-    <div class="is-flex vertical-center">
+    <div class="is-flex v-center-content">
       <h1 class="title is-1">{{ '\{\{ logo \}\}' }}</h1>
       <TheHeaderButtonsBurgerMenuUserInformations />
       <hr class="divider-small" />
@@ -40,10 +40,6 @@ export default {
   position: fixed;
   margin-left: -20px;
   max-width: 80%;
-}
-.vertical-center {
-  flex-direction: column;
-  align-items: center;
 }
 .divider-small {
   width: 10rem;

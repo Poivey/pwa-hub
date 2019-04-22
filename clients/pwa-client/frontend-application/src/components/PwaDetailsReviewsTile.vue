@@ -1,5 +1,5 @@
 <template>
-  <div class="review box is-flex is-size-7">
+  <div class="box is-flex v-center-content is-size-7">
     <div class="is-flex review-header">
       <div>
         <router-link to="/user/cc" tag="div" class="cursor-pointer">
@@ -40,10 +40,6 @@ export default {
 </script>
 
 <style scoped>
-.review {
-  flex-direction: column;
-  align-items: center;
-}
 .review-header {
   width: 100%;
   justify-content: space-between;

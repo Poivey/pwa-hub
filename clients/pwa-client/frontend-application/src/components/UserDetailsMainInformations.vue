@@ -1,5 +1,5 @@
 <template>
-  <div class="is-flex main-informations-wrapper">
+  <div class="is-flex v-center-content">
     <div class="mb-3">
       <figure class="image profile-picture">
         <img src="https://bulma.io/images/placeholders/480x480.png" />
@@ -19,10 +19,6 @@ export default {}
 </script>
 
 <style scoped>
-.main-informations-wrapper {
-  flex-direction: column;
-  align-items: center;
-}
 .profile-picture {
   width: 256px;
 }

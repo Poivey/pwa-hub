@@ -1,7 +1,7 @@
 <template>
   <div>
     <h5 class="title is-5 mb-2">Description</h5>
-    <div class="is-flex descrition-wrapper is-size-7-mobile">
+    <div class="is-flex v-center-content is-size-7-mobile">
       <div :class="{ smallDescription: !isFullDescription }">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non mauris vitae erat
         gravida maximus in in tortor. Integer ultrices blandit purus. Donec non orci non tortor
@@ -52,10 +52,6 @@ export default {
 </script>
 
 <style scoped>
-.descrition-wrapper {
-  flex-direction: column;
-  align-items: center;
-}
 .smallDescription {
   height: 3.2rem;
   overflow: hidden;

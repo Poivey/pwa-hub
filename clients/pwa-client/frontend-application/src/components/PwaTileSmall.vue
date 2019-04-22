@@ -1,6 +1,6 @@
 <template>
   <router-link to="/pwa/cc">
-    <div class="pwa-tile box is-flex p-2">
+    <div class="pwa-tile box is-flex flex-column p-2">
       <figure class="image is-square">
         <img src="https://bulma.io/images/placeholders/480x480.png" />
       </figure>
@@ -25,7 +25,6 @@ export default {}
 
 <style scoped>
 .pwa-tile {
-  flex-direction: column;
   max-width: 90px;
 }
 .pwa-name {

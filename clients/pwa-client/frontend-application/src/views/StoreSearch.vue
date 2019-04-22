@@ -1,6 +1,6 @@
 <template>
   <section class="section pt-4">
-    <div class="container is-flex center-content">
+    <div class="container is-flex v-center-content">
       <StoreSearchCategorySelector class="mb-4" />
       <div class="results is-flex mb-0">
         <!-- <PwaTileMedium
@@ -61,9 +61,5 @@ export default {
 .results {
   justify-content: space-evenly;
   flex-wrap: wrap;
-}
-.center-content {
-  flex-direction: column;
-  align-items: center;
 }
 </style>
