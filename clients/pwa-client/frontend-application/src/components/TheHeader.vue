@@ -1,7 +1,7 @@
 <template>
   <div class="header-wrapper">
     <div>
-      <TheHeaderButtonBurger />
+      <TheHeaderButtons />
     </div>
     <div class="search-bar-wrapper ml-2">
       <TheHeaderSearchBar />
@@ -10,12 +10,12 @@
 </template>
 
 <script>
+import TheHeaderButtons from '@/components/TheHeaderButtons.vue'
 import TheHeaderSearchBar from '@/components/TheHeaderSearchBar.vue'
-import TheHeaderButtonBurger from '@/components/TheHeaderButtonBurger.vue'
 
 export default {
   components: {
-    TheHeaderButtonBurger,
+    TheHeaderButtons,
     TheHeaderSearchBar,
   },
 }

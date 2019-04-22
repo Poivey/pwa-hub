@@ -3,22 +3,28 @@
     <a class="button button-burger-menu is-primary is-inverted is-outlined" @click="openSideMenu()">
       <b-icon icon="menu" />
     </a>
+    <router-link to="/">
+      <a class="button button-burger-menu is-primary is-inverted is-outlined">
+        <b-icon icon="home" />
+      </a>
+    </router-link>
+
     <b-modal
       class="side-menu-modal"
       :active.sync="isSideMenuActive"
       :canCancel="['escape', 'outside']"
     >
-      <TheHeaderButtonBurgerMenu />
+      <TheHeaderButtonsBurgerMenu />
     </b-modal>
   </div>
 </template>
 
 <script>
-import TheHeaderButtonBurgerMenu from '@/components/TheHeaderButtonBurgerMenu.vue'
+import TheHeaderButtonsBurgerMenu from '@/components/TheHeaderButtonsBurgerMenu.vue'
 
 export default {
   components: {
-    TheHeaderButtonBurgerMenu,
+    TheHeaderButtonsBurgerMenu,
   },
   data: function() {
     return {
