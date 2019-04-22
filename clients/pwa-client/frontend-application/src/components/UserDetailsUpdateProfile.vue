@@ -4,7 +4,7 @@
       <b-icon icon="account-edit" />
       <span>Edit your profile</span>
     </a>
-    <b-modal class="side-menu-modal" :active.sync="isUpdateUserModalOpen">
+    <b-modal :active.sync="isUpdateUserModalOpen">
       <div class="box">
         <div class="mb-3">
           <h3 class="title is-4">

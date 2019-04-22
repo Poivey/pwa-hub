@@ -4,7 +4,7 @@
       <b-icon icon="pencil" />
       <span>Edit this PWA</span>
     </a>
-    <b-modal class="side-menu-modal" :active.sync="isUpdatePwaModalOpen">
+    <b-modal :active.sync="isUpdatePwaModalOpen">
       <div class="box">
         <div class="mb-3">
           <h3 class="title is-4">

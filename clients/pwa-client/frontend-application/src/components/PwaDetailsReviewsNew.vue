@@ -4,7 +4,7 @@
       <b-icon icon="comment-text" size="is-small" />
       <span>{{ userCurrentReview ? 'Update your review' : 'Add a new review' }}</span>
     </a>
-    <b-modal class="side-menu-modal" :active.sync="isReviewModalActive">
+    <b-modal :active.sync="isReviewModalActive">
       <div class="box is-size-7">
         <h3 class="title is-4">
           {{ userCurrentReview ? 'Update your review' : 'Add a new review' }}

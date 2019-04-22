@@ -4,7 +4,7 @@
       <b-icon icon="lifebuoy" />
       <span>Help / What's a PWA ?</span>
     </a>
-    <b-modal class="side-menu-modal" :active.sync="isHelpModalActive">
+    <b-modal :active.sync="isHelpModalActive">
       <div class="box">
         <b-tabs type="is-toggle" position="is-centered">
           <b-tab-item label="I'm a user" icon="account">

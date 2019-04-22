@@ -4,7 +4,7 @@
       <b-icon icon="image-plus" />
       <span>Edit icon and screenshots</span>
     </a>
-    <b-modal class="side-menu-modal" :active.sync="isPwaPictureModalOpen">
+    <b-modal :active.sync="isPwaPictureModalOpen">
       <div class="box">
         <div class="mb-3">
           <h3 class="title is-4">

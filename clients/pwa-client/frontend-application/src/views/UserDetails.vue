@@ -34,9 +34,4 @@ export default {
 </script>
 
 <style scoped>
-.divider-small {
-  width: 10rem;
-  margin-left: auto;
-  margin-right: auto;
-}
 </style>

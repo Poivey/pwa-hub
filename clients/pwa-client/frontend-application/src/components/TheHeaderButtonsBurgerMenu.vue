@@ -2,6 +2,7 @@
   <div class="box side-menu-wrapper">
     <div class="is-flex v-center-content">
       <h1 class="title is-1">{{ '\{\{ logo \}\}' }}</h1>
+      <TheButtonLogInRegister />
       <TheHeaderButtonsBurgerMenuUserInformations />
       <hr class="divider-small" />
       <b-switch v-model="isDarkThemed">
@@ -14,10 +15,13 @@
 </template>
 
 <script>
+import TheButtonLogInRegister from '@/components/TheButtonLogInRegister.vue'
 import TheHeaderButtonsBurgerMenuUserInformations from '@/components/TheHeaderButtonsBurgerMenuUserInformations.vue'
 import ThePwaInformationsHelpButton from '@/components/ThePwaInformationsHelpButton.vue'
+
 export default {
   components: {
+    TheButtonLogInRegister,
     TheHeaderButtonsBurgerMenuUserInformations,
     ThePwaInformationsHelpButton,
   },
@@ -40,10 +44,5 @@ export default {
   position: fixed;
   margin-left: -20px;
   max-width: 80%;
-}
-.divider-small {
-  width: 10rem;
-  margin-left: auto;
-  margin-right: auto;
 }
 </style>
