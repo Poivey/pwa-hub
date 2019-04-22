@@ -1,7 +1,7 @@
 <template>
   <div>
     <h5 class="title is-5 mb-3">Reviews</h5>
-    <PwaDetailsReviewsNew />
+    <PwaDetailsReviewsNew class="mb-3" />
     <div class="columns is-multiline">
       <div class="column is-6">
         <PwaDetailsReviewsTile />

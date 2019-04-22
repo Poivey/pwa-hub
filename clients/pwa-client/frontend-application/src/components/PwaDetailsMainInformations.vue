@@ -8,7 +8,9 @@
     <div class="column ml-3">
       <div class="is-flex main-informations">
         <p>Twitter</p>
-        <p class="has-text-grey-light">creator name.inc</p>
+        <router-link to="/user/cc">
+          <p class="has-text-link">creator name.inc</p>
+        </router-link>
         <p class="has-text-grey-light">registered on 10/06/2019</p>
         <PwaDetailsMainInformationsRating />
       </div>

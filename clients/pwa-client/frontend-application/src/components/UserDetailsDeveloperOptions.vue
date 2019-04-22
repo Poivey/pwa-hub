@@ -22,6 +22,7 @@
           <b-field label="PWA url">
             <b-input></b-input>
           </b-field>
+
           <b-field label="Category">
             <b-select v-model="category" icon="filter">
               <option selected value="productivity">productivity</option>

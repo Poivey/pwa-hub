@@ -1,12 +1,8 @@
 <template>
   <div class="box side-menu-wrapper">
-    <div class="is-flex side-menu">
+    <div class="is-flex vertical-center">
       <h1 class="title is-1">{{ '\{\{ logo \}\}' }}</h1>
-      <figure class="image is-128x128">
-        <img src="https://bulma.io/images/placeholders/480x480.png" />
-      </figure>
-      <p class="mt-2">Username</p>
-      <p class="mt-2 has-text-grey-light">user.name@gmail.com</p>
+      <TheHeaderButtonsBurgerMenuUserInformations />
       <hr class="divider-small" />
       <b-switch v-model="isDarkThemed">
         Dark mode <b-icon icon="weather-night" size="is-small" />
@@ -18,9 +14,11 @@
 </template>
 
 <script>
+import TheHeaderButtonsBurgerMenuUserInformations from '@/components/TheHeaderButtonsBurgerMenuUserInformations.vue'
 import ThePwaInformationsHelpButton from '@/components/ThePwaInformationsHelpButton.vue'
 export default {
   components: {
+    TheHeaderButtonsBurgerMenuUserInformations,
     ThePwaInformationsHelpButton,
   },
   computed: {
@@ -43,7 +41,7 @@ export default {
   margin-left: -20px;
   max-width: 80%;
 }
-.side-menu {
+.vertical-center {
   flex-direction: column;
   align-items: center;
 }

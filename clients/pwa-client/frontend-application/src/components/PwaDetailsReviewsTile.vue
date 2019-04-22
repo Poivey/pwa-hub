@@ -2,7 +2,9 @@
   <div class="review box is-flex is-size-7">
     <div class="is-flex review-header">
       <div>
-        <div class="">Username</div>
+        <router-link to="/user/cc" tag="div" class="cursor-pointer">
+          <div>Username</div>
+        </router-link>
         <div class="has-text-grey-light">10/06/2019</div>
       </div>
       <div>

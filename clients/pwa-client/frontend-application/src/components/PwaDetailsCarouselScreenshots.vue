@@ -6,7 +6,7 @@
         v-for="url in screenshots"
         :key="url"
         @click="openImageModal(url)"
-        class="carousel-item"
+        class="carousel-item cursor-pointer"
         :src="url"
       />
     </div>
