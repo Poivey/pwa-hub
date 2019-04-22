@@ -5,6 +5,10 @@
         <div class="column is-4-desktop is-flex v-center-content">
           <PwaDetailsMainInformations class="mb-3" />
           <PwaDetailsButtonUrl class="mb-3" />
+          <div v-if="true" class="is-inline-flex">
+            <PwaDetailsUpdateInformations />
+            <PwaDetailsUpdatePictures class="ml-2" />
+          </div>
         </div>
         <div class="column is-flex v-center-content">
           <PwaDetailsCarouselScreenshots class="mb-3" />
@@ -22,6 +26,8 @@ import PwaDetailsCarouselScreenshots from '@/components/PwaDetailsCarouselScreen
 import PwaDetailsDescription from '@/components/PwaDetailsDescription.vue'
 import PwaDetailsMainInformations from '@/components/PwaDetailsMainInformations.vue'
 import PwaDetailsReviews from '@/components/PwaDetailsReviews.vue'
+import PwaDetailsUpdateInformations from '@/components/PwaDetailsUpdateInformations.vue'
+import PwaDetailsUpdatePictures from '@/components/PwaDetailsUpdatePictures.vue'
 
 export default {
   components: {
@@ -30,6 +36,8 @@ export default {
     PwaDetailsDescription,
     PwaDetailsMainInformations,
     PwaDetailsReviews,
+    PwaDetailsUpdateInformations,
+    PwaDetailsUpdatePictures,
   },
   mounted: function() {
     console.log(`hello, world ! this is pwa details`)

@@ -25,13 +25,10 @@
         efficitur tellus sit amet, tempor nisi. Vivamus imperdiet mollis vestibulum. Phasellus
         dignissim odio sed elementum dignissim. Cras ullamcorper faucibus faucibus.
       </div>
-      <div
-        class="is-flex has-text-link toggle-description-size-button mt-1"
-        @click="toggleDescriptionSize()"
-      >
-        <b-icon :icon="isFullDescription ? 'minus' : 'plus'" size="is-small" class="mr-2" />
-        <p>{{ isFullDescription ? 'See less' : 'See more' }}</p>
-      </div>
+      <a class="button is-link is-size-7 mt-2" @click="toggleDescriptionSize()">
+        <b-icon :icon="isFullDescription ? 'minus' : 'plus'" size="is-small" />
+        <span>{{ isFullDescription ? 'See less' : 'See more' }}</span>
+      </a>
     </div>
   </div>
 </template>
@@ -56,9 +53,5 @@ export default {
   height: 3.2rem;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.toggle-description-size-button {
-  align-items: baseline;
-  cursor: pointer;
 }
 </style>

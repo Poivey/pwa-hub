@@ -4,9 +4,9 @@
       <b-icon icon="account-edit" />
       <span>Edit your profile</span>
     </a>
-    <b-modal class="side-menu-modal" :active.sync="isUpdateUserModalEnabled">
+    <b-modal class="side-menu-modal" :active.sync="isUpdateUserModalOpen">
       <div class="box">
-        <div class="user-update-form mb-3">
+        <div class="mb-3">
           <h3 class="title is-4">
             Update your profile
           </h3>
@@ -43,16 +43,16 @@
 export default {
   data: function() {
     return {
-      isUpdateUserModalEnabled: false,
+      isUpdateUserModalOpen: false,
       profilePicture: undefined,
     }
   },
   methods: {
     openUpdateUserModal: function() {
-      this.isUpdateUserModalEnabled = true
+      this.isUpdateUserModalOpen = true
     },
     closeUpdateUserModal: function() {
-      this.isUpdateUserModalEnabled = false
+      this.isUpdateUserModalOpen = false
     },
   },
 }

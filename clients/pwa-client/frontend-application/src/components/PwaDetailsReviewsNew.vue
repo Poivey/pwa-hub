@@ -1,7 +1,7 @@
 <template>
   <div>
     <a class="button is-link is-size-7" @click="openReviewModal()">
-      <b-icon icon="plus" size="is-small" />
+      <b-icon icon="comment-text" size="is-small" />
       <span>{{ userCurrentReview ? 'Update your review' : 'Add a new review' }}</span>
     </a>
     <b-modal class="side-menu-modal" :active.sync="isReviewModalActive">
