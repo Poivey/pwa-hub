@@ -1,7 +1,7 @@
 import { Review } from '../model/review'
 
 export interface NewReview {
-  userId: string // TODO remove userId from request when authentication is set
+  userId: string
   content: string
   rate: number
 }

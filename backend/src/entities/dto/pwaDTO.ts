@@ -11,7 +11,6 @@ export interface PwaDTO {
   category: string
   rate: number
   reviewCount: number
-  // tags: string[]
   createdDate: string
   lastUpdatedDate: string
   creatorId: string

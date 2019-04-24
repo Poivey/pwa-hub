@@ -4,6 +4,7 @@ import { Pwa } from '../../entities/model/pwa'
 import { PwaSearchResults } from '../resultModels/pwaSearchResults'
 import { getClient, marshal, marshalString, unmarshal, unmarshalList } from '../util'
 import { table } from './table'
+import { NewPwa } from '../../entities/requests/newPwa'
 
 export const getById = async (id: string): Promise<Pwa | undefined> => {
   const result: any = await getClient()
@@ -112,6 +113,72 @@ export const addScreenshot = async (
       },
     })
     .promise()
+}
+
+export const deleteScreenshots = async (
+  screenshotsIndexes: number[],
+  pwaId: string,
+  devToken: string
+): Promise<Pwa> => {
+  const updateExpression =
+    'REMOVE ' + screenshotsIndexes.map(index => `#screenshots[${index}]`).join(', ')
+  const result: any = await getClient()
+    .update({
+      TableName: table.name.get(),
+      Key: { id: pwaId },
+      ReturnValues: 'ALL_OLD',
+      ConditionExpression:
+        'attribute_exists(#id) AND #devToken <> :v_empty AND #devToken = :v_devToken',
+      UpdateExpression: updateExpression,
+      ExpressionAttributeNames: {
+        '#id': 'id',
+        '#devToken': 'devToken',
+        '#screenshots': 'screenshots',
+      },
+      ExpressionAttributeValues: {
+        ':v_devToken': marshalString(devToken),
+        ':v_empty': marshalString(''),
+      },
+    })
+    .promise()
+  return unmarshal(result.Attributes)
+}
+
+export const partialUpdate = async (
+  pwaUpdatedFields: NewPwa,
+  pwaId: string,
+  devToken: string
+): Promise<Pwa> => {
+  const result: any = await getClient()
+    .update({
+      TableName: table.name.get(),
+      Key: { id: pwaId },
+      ReturnValues: 'ALL_NEW',
+      ConditionExpression:
+        'attribute_exists(#id) AND #devToken <> :v_empty AND #devToken = :v_devToken',
+      UpdateExpression:
+        'SET #category = :v_category, #description = :v_description, #name = :v_name, #url = :v_url, #lastUpdatedDate = :lastUpdatedDate',
+      ExpressionAttributeNames: {
+        '#id': 'id',
+        '#devToken': 'devToken',
+        '#category': 'category',
+        '#description': 'description',
+        '#name': 'name',
+        '#url': 'url',
+        '#lastUpdatedDate': 'lastUpdatedDate',
+      },
+      ExpressionAttributeValues: {
+        ':v_devToken': marshalString(devToken),
+        ':v_category': marshalString(pwaUpdatedFields.category),
+        ':v_description': marshalString(pwaUpdatedFields.description),
+        ':v_name': marshalString(pwaUpdatedFields.name),
+        ':v_url': marshalString(pwaUpdatedFields.url),
+        ':v_empty': marshalString(''),
+        ':lastUpdatedDate': new Date().toISOString(),
+      },
+    })
+    .promise()
+  return unmarshal(result.Attributes)
 }
 
 export const searchInAll = async (

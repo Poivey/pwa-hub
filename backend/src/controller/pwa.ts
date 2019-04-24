@@ -1,12 +1,12 @@
-import { BucketEvent } from '@pulumi/aws/s3'
 import { Request, Response } from '@pulumi/cloud'
 import { pwaToPwaDTO } from '../entities/dto/pwaDTO'
 import { Pwa } from '../entities/model/pwa'
+import { User } from '../entities/model/user'
 import * as newPwaReq from '../entities/requests/newPwa'
 import * as pwaStorage from '../storage/pwaStorage'
 import * as pwaTable from '../tables/pwa/queries'
 import * as userTable from '../tables/user/queries'
-import { User } from '../entities/model/user'
+import { pwaUpdateTopic } from '../topics/tableSync'
 
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']
@@ -27,16 +27,13 @@ export const get = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   const body: newPwaReq.NewPwa = JSON.parse(req.body.toString())
-  let devToken = req.headers && req.headers.devtoken
+  const devToken = req.headers && req.headers.devtoken
   if (!newPwaReq.isValid(body)) {
     res.status(400).json(`Invalid request`)
     return
   }
-  if (typeof devToken !== 'string') {
-    devToken = ''
-  }
   const pwa: Pwa = newPwaReq.toPwa(body)
-  const user: User | undefined = await userTable.getByDevToken(devToken)
+  const user: User | undefined = await userTable.getByDevToken(devToken as string)
   if (!user) {
     res.status(400).json(`invalid devToken`)
     return
@@ -64,15 +61,35 @@ export const create = async (req: Request, res: Response) => {
   }
 }
 
+export const update = async (req: Request, res: Response) => {
+  const id = req.params['id']
+  const devToken = req.headers && req.headers.devtoken
+  const pwaUpdatedFields: newPwaReq.NewPwa = JSON.parse(req.body.toString())
+  if (!newPwaReq.isValid(pwaUpdatedFields)) {
+    res.status(400).json(`Invalid request, informations missing or PWA unknown`)
+    return
+  }
+  try {
+    const updatedPwa = await pwaTable.partialUpdate(pwaUpdatedFields, id, devToken as string)
+    await pwaUpdateTopic.publish({ pwa: updatedPwa })
+    res.status(200).json({ pwa: pwaToPwaDTO(updatedPwa) })
+  } catch (err) {
+    if (err.code === 'ConditionalCheckFailedException') {
+      res.status(403).end()
+    } else {
+      res.status(500).end()
+      console.log(pwaUpdatedFields)
+      console.log(`PUT ${req.path} => error: ${err.stack}`)
+    }
+  }
+}
+
 export const search = async (req: Request, res: Response) => {
   const input = req.query && req.query.input
-  let startKey = req.query && req.query.startKey
-  if (input && typeof input === 'string') {
-    if (typeof startKey !== 'string') {
-      startKey = ''
-    }
+  const startKey = req.query && req.query.startKey
+  if (input) {
     try {
-      const searchResult = await pwaTable.searchInAll(input, 10, startKey)
+      const searchResult = await pwaTable.searchInAll(input as string, 10, startKey as string)
       res.status(200).json(searchResult)
     } catch (err) {
       res.status(500).end()
@@ -84,17 +101,16 @@ export const search = async (req: Request, res: Response) => {
 }
 
 export const searchInCategory = async (req: Request, res: Response) => {
-  let input = req.query && req.query.input
-  let startKey = req.query && req.query.startKey
+  const input = req.query && req.query.input
+  const startKey = req.query && req.query.startKey
   const category = req.params['category']
-  if (!input || typeof input !== 'string') {
-    input = ''
-  }
-  if (typeof startKey !== 'string') {
-    startKey = ''
-  }
   try {
-    const searchResult = await pwaTable.searchInCategory(input, category, 10, startKey)
+    const searchResult = await pwaTable.searchInCategory(
+      input as string,
+      category,
+      10,
+      startKey as string
+    )
     res.status(200).json(searchResult)
   } catch (err) {
     res.status(500).end()
@@ -102,29 +118,31 @@ export const searchInCategory = async (req: Request, res: Response) => {
   }
 }
 
-// TODO move to storage
-// TODO control max size through record.s3.object.size
-const onScreenshotUpload = (event: BucketEvent) => {
-  console.log('call on Screenshot Upload')
-  if (event.Records) {
-    event.Records.forEach(async record => {
-      const key: string = record.s3.object.key
-      try {
-        const uploadMetadata = await pwaStorage.getScreenshotUploadTag(key)
-        if (uploadMetadata.devToken && uploadMetadata.pwaID) {
-          await pwaTable.addScreenshot(key, uploadMetadata.pwaID, uploadMetadata.devToken)
-          console.log(`new screenshot for pwa ${uploadMetadata.pwaID} : ${key}`)
-        } else {
-          await pwaStorage.deleteScreenshot(key)
-        }
-      } catch (err) {
-        if (err.code === 'ConditionalCheckFailedException') {
-          await pwaStorage.deleteScreenshot(key)
-        } else {
-          console.log(`error while updating screenshot : ${err.stack}`)
-        }
+export const deleteScreenshots = async (req: Request, res: Response) => {
+  const id = req.params['id']
+  const screenshotsIndexesRaw = req.query.screenshotsIndexes
+  const devToken = req.headers && req.headers.devtoken
+  if (!screenshotsIndexesRaw) {
+    res.status(400).end()
+    console.log('wrong indexes')
+    return
+  }
+  const screenshotsIndexes = (screenshotsIndexesRaw as string)
+    .split(',')
+    .map(parseInt)
+    .filter(index => !isNaN(index))
+  try {
+    const oldPwa = await pwaTable.deleteScreenshots(screenshotsIndexes, id, devToken as string)
+    if (!!oldPwa) {
+      for (const index of screenshotsIndexes) {
+        await pwaStorage.deleteScreenshot(oldPwa.screenshots[index])
       }
-    })
+      res.status(200).end()
+    } else {
+      res.status(400).end()
+    }
+  } catch (err) {
+    res.status(500).end()
+    console.log(`DELETe ${req.path} => error: ${err.stack}`)
   }
 }
-pwaStorage.screenshotsBucket.onObjectCreated('onScreenshotUpload', onScreenshotUpload)

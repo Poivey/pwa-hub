@@ -9,8 +9,7 @@ export interface Pwa {
   category: string
   rate: number
   reviewCount: number
-  popularity: number // TODO remove this comment is popularity works as a number instead of as a string
-  // tags: string[]
+  popularity: number
   createdDate: string
   lastUpdatedDate: string
   creatorId: string

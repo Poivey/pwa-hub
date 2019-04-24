@@ -1,4 +1,6 @@
 import { s3 } from '@pulumi/aws'
+import { BucketEvent } from '@pulumi/aws/s3'
+import * as pwaTable from '../tables/pwa/queries'
 import { deleteObject, getObjectTags } from './util'
 
 export const screenshotsBucket = new s3.Bucket('pwa-screenshots') // configurer, écriture : tout le monde, lecture : tout le monde, delete : que moi
@@ -25,3 +27,31 @@ export interface ScreenshotTags {
   devToken?: string
   pwaID?: string
 }
+
+// TODO control max size through record.s3.object.size
+const onScreenshotUpload = (event: BucketEvent) => {
+  console.log('call on Screenshot Upload')
+  if (event.Records) {
+    event.Records.forEach(async record => {
+      record.eventName
+      const key: string = record.s3.object.key
+      try {
+        const uploadMetadata = await getScreenshotUploadTag(key)
+        if (uploadMetadata.devToken && uploadMetadata.pwaID) {
+          await pwaTable.addScreenshot(key, uploadMetadata.pwaID, uploadMetadata.devToken)
+          console.log(`new screenshot for pwa ${uploadMetadata.pwaID} : ${key}`)
+          console.log(`size is ${record.s3.object.size}`)
+        } else {
+          await deleteScreenshot(key)
+        }
+      } catch (err) {
+        if (err.code === 'ConditionalCheckFailedException') {
+          await deleteScreenshot(key)
+        } else {
+          console.log(`error while updating screenshot : ${err.stack}`)
+        }
+      }
+    })
+  }
+}
+screenshotsBucket.onObjectCreated('onScreenshotUpload', onScreenshotUpload)

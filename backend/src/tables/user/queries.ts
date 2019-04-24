@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid'
 import { User } from '../../entities/model/user'
 import { getClient, marshal, marshalString, unmarshal } from '../util'
 import { table } from './table'
+import { NewUser } from '../../entities/requests/newUser'
 
 export const getById = async (id: string): Promise<User | undefined> => {
   const result: any = await getClient()
@@ -57,20 +58,18 @@ export const existById = async (id: string): Promise<boolean> => {
   return result.Count != 0
 }
 
-export const existByEmail = async (email: string): Promise<boolean> => {
+export const existByEmail = async (email: string): Promise<string | undefined> => {
   const result = await getClient()
     .query({
       TableName: table.name.get(),
       IndexName: 'emailKeysOnly',
-      Select: 'COUNT',
+      Limit: 1,
       KeyConditionExpression: '#email = :v_email',
       ExpressionAttributeNames: { '#email': 'email' },
       ExpressionAttributeValues: { ':v_email': email },
     })
     .promise()
-  console.log('exist by email result with no limit parameter')
-  console.log(result)
-  return result.Count != 0
+  return result.Items && result.Items.length > 0 && unmarshal(result.Items[0]).id
 }
 
 export const create = async (user: User): Promise<User> => {
@@ -83,6 +82,33 @@ export const create = async (user: User): Promise<User> => {
     })
     .promise()
   return unmarshal(user)
+}
+
+export const partialUpdate = async (
+  userUpdatedFields: NewUser,
+  userId: string,
+  currentEmail: string
+): Promise<User> => {
+  const result: any = await getClient()
+    .update({
+      TableName: table.name.get(),
+      Key: { id: userId },
+      ReturnValues: 'ALL_NEW',
+      ConditionExpression: 'attribute_exists(#id) AND #email = :v_current_email',
+      UpdateExpression: 'SET #email = :v_email, #username = :v_username',
+      ExpressionAttributeNames: {
+        '#id': 'id',
+        '#email': 'email',
+        '#username': 'username',
+      },
+      ExpressionAttributeValues: {
+        ':v_current_email': marshalString(currentEmail.toLowerCase()),
+        ':v_email': marshalString(userUpdatedFields.email.toLowerCase()),
+        ':v_username': marshalString(userUpdatedFields.username),
+      },
+    })
+    .promise()
+  return unmarshal(result.Attributes)
 }
 
 export const destroy = async (id: string): Promise<boolean> => {
@@ -102,8 +128,6 @@ export const updateDevToken = async (userId: string, devToken: string): Promise<
       TableName: table.name.get(),
       Key: { id: userId },
       ReturnValues: 'ALL_NEW',
-      // should it be ALL_OLD ? we already now what we've updated (except the precise date)
-      // the update method should be predictable anyway.
       ConditionExpression: 'attribute_exists(#id)',
       UpdateExpression:
         'SET #devToken = :v_devToken, #devTokenLastUpdatedDate = :v_devTokenLastUpdatedDate',
