@@ -1,4 +1,4 @@
-import { sdk, s3 } from '@pulumi/aws'
+import { s3, sdk } from '@pulumi/aws'
 import { Tag } from 'aws-sdk/clients/s3'
 
 const getSdk = () => new sdk.S3()

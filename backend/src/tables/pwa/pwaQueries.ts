@@ -1,10 +1,10 @@
 import { DynamoDB } from 'aws-sdk'
 import { v4 as uuid } from 'uuid'
 import { Pwa } from '../../entities/model/pwa'
+import { NewPwa } from '../../entities/requests/newPwa'
 import { PwaSearchResults } from '../resultModels/pwaSearchResults'
 import { getClient, marshal, marshalString, unmarshal, unmarshalList } from '../util'
-import { table } from './table'
-import { NewPwa } from '../../entities/requests/newPwa'
+import { table } from './pwaTable'
 
 export const getById = async (id: string): Promise<Pwa | undefined> => {
   const result: any = await getClient()

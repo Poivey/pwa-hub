@@ -1,6 +1,6 @@
-import { Table } from '@pulumi/aws/dynamodb'
-import { userUpdateTopic, pwaUpdateTopic } from '../../topics/tableSync'
-import { updateUserInfo, updatePwaInfo } from './replication'
+import { Table } from '@pulumi/aws/dynamodb';
+import { pwaUpdateTopic, userUpdateTopic } from '../../topics/tableSyncTopics';
+import { updatePwaInfo, updateUserInfo } from './reviewTableSync';
 
 export const table = new Table('review', {
   attributes: [

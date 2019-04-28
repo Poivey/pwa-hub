@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid'
 import { User } from '../../entities/model/user'
-import { getClient, marshal, marshalString, unmarshal } from '../util'
-import { table } from './table'
 import { NewUser } from '../../entities/requests/newUser'
+import { getClient, marshal, marshalString, unmarshal } from '../util'
+import { table } from './userTable'
 
 export const getById = async (id: string): Promise<User | undefined> => {
   const result: any = await getClient()

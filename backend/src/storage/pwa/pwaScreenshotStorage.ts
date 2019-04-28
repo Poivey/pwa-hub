@@ -1,6 +1,6 @@
 import { s3 } from '@pulumi/aws'
 import { BucketEvent } from '@pulumi/aws/s3'
-import * as pwaTable from '../../tables/pwa/queries'
+import * as pwaTable from '../../tables/pwa/pwaQueries'
 import { deleteObject, getPwaTags } from '../util'
 
 export const screenshotsBucket = new s3.Bucket('pwa-screenshots') // configurer, écriture : tout le monde, lecture : tout le monde, delete : que moi

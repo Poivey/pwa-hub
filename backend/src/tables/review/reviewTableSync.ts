@@ -1,10 +1,12 @@
-import { getClient, marshalString } from '../util'
-import { User } from '../../entities/model/user'
-import { getByPwaId, getByUserId } from './queries'
-import { table } from './table'
 import { Pwa } from '../../entities/model/pwa'
+import { User } from '../../entities/model/user'
+import { getClient, marshalString } from '../util'
+import { getByPwaId, getByUserId } from './reviewQueries'
+import { table } from './reviewTable'
 
 export const updateUserInfo = async (updateData: { user: User }) => {
+  console.log(`called updateUserInfo`)
+  console.log(updateData)
   const dynamoClient = getClient()
   const reviewsFromUser = await getByUserId(updateData.user.id, 'pwaId, userId')
   if (reviewsFromUser) {
@@ -30,6 +32,8 @@ export const updateUserInfo = async (updateData: { user: User }) => {
 }
 
 export const updatePwaInfo = async (updateData: { pwa: Pwa }) => {
+  console.log(`called updatePwaInfo`)
+  console.log(updateData)
   const dynamoClient = getClient()
   const reviewsForPwa = await getByPwaId(updateData.pwa.id, 'pwaId, userId')
   if (reviewsForPwa) {

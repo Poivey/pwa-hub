@@ -1,14 +1,15 @@
-import { User } from '../../entities/model/user'
-import { getClient, marshalString, marshal } from '../util'
-import { getByCreatorId, getById } from './queries'
-import { table } from './table'
-import { Review, MAX_RATE } from '../../entities/model/review'
 import { Pwa } from '../../entities/model/pwa'
+import { MAX_RATE, Review } from '../../entities/model/review'
+import { User } from '../../entities/model/user'
+import { getClient, marshal, marshalString } from '../util'
+import { getByCreatorId, getById } from './pwaQueries'
+import { table } from './pwaTable'
 
 export const updateCreatorInfo = async (updateData: { user: User }): Promise<void> => {
+  console.log(`called updateCreatorInfo with creator id as : ${updateData.user.id}`)
+  console.log(updateData)
   const dynamoClient = getClient()
   const pwaFromUser = await getByCreatorId(updateData.user.id, 'id')
-  console.log(`called update creator with creator id as : ${updateData.user.id}`)
   if (pwaFromUser) {
     for (const pwa of pwaFromUser) {
       await dynamoClient

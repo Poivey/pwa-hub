@@ -1,6 +1,6 @@
 import { s3 } from '@pulumi/aws'
 import { BucketEvent } from '@pulumi/aws/s3'
-import * as userTable from '../../tables/user/queries'
+import * as userTable from '../../tables/user/userQueries'
 import { deleteObject, getUserTags } from '../util'
 
 export const userPicturesBucket = new s3.Bucket('user-profile-picture')

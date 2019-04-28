@@ -4,9 +4,9 @@ import { Pwa } from '../entities/model/pwa'
 import { User } from '../entities/model/user'
 import * as newPwaReq from '../entities/requests/newPwa'
 import * as pwaStorage from '../storage/pwa/pwaScreenshotStorage'
-import * as pwaTable from '../tables/pwa/queries'
-import * as userTable from '../tables/user/queries'
-import { pwaUpdateTopic } from '../topics/tableSync'
+import * as pwaTable from '../tables/pwa/pwaQueries'
+import * as userTable from '../tables/user/userQueries'
+import { pwaUpdateTopic } from '../topics/tableSyncTopics'
 
 export const get = async (req: Request, res: Response) => {
   const id = req.params['id']
@@ -14,14 +14,12 @@ export const get = async (req: Request, res: Response) => {
     const pwa: Pwa | undefined = await pwaTable.getById(id)
     if (pwa) {
       res.status(200).json(pwaToPwaDTO(pwa))
-      console.log(`GET ${req.path} => success`)
     } else {
       res.status(404).end()
-      console.log(`GET ${req.path} => 404, pwa is missing`)
     }
   } catch (err) {
     res.status(500).json(err.stack)
-    console.log(`GET ${req.path} => error: ${err.stack}`)
+    console.log(`${req.method} ${req.path} => error: ${err.stack}`)
   }
 }
 
@@ -44,7 +42,6 @@ export const create = async (req: Request, res: Response) => {
   }
   if (await pwaTable.existByUrl(pwa.url)) {
     res.status(409).json(`pwa with url ${pwa.url} already exist !`)
-    console.log(`POST ${req.path} => 409 conflict, pwa : ${pwa.url} already exist`)
     return
   }
   try {
@@ -53,11 +50,10 @@ export const create = async (req: Request, res: Response) => {
       .status(201)
       .setHeader(`Content-Location`, `/api/pwa/${pwa.id}`)
       .json(pwaToPwaDTO(saved))
-    console.log(`POST ${req.path} => created pwa : ${pwa.url} with id ${pwa.id}`)
+    console.log(`${req.method} ${req.path} => created pwa : ${pwa.url} with id ${pwa.id}`)
   } catch (err) {
     res.status(500).end()
-    console.log(pwa)
-    console.log(`POST ${req.path} => error: ${err.stack}`)
+    console.log(`${req.method} ${req.path} => error: ${err.stack}`)
   }
 }
 
@@ -78,8 +74,7 @@ export const update = async (req: Request, res: Response) => {
       res.status(403).end()
     } else {
       res.status(500).end()
-      console.log(pwaUpdatedFields)
-      console.log(`PUT ${req.path} => error: ${err.stack}`)
+      console.log(`${req.method} ${req.path} => error: ${err.stack}`)
     }
   }
 }
@@ -93,7 +88,7 @@ export const search = async (req: Request, res: Response) => {
       res.status(200).json(searchResult)
     } catch (err) {
       res.status(500).end()
-      console.log(`GET ${req.path} => error: ${err.stack}`)
+      console.log(`${req.method} ${req.path} => error: ${err.stack}`)
     }
   } else {
     res.status(400).end()
@@ -114,7 +109,7 @@ export const searchInCategory = async (req: Request, res: Response) => {
     res.status(200).json(searchResult)
   } catch (err) {
     res.status(500).end()
-    console.log(`GET ${req.path} => error: ${err.stack}`)
+    console.log(`${req.method} ${req.path} => error: ${err.stack}`)
   }
 }
 
@@ -130,7 +125,6 @@ export const deleteScreenshots = async (req: Request, res: Response) => {
       .filter(index => !isNaN(index))
   if (!screenshotsIndexes || !screenshotsIndexes.length) {
     res.status(400).end()
-    console.log('no numeric indexes given')
     return
   }
   try {
@@ -146,7 +140,7 @@ export const deleteScreenshots = async (req: Request, res: Response) => {
       res.status(400).json('one or more screenshots indexes is invalid')
     } else {
       res.status(500).end()
-      console.log(`DELETE ${req.path} => error: ${err.stack}`)
+      console.log(`${req.method} ${req.path} => error: ${err.stack}`)
     }
   }
 }

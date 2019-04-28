@@ -1,6 +1,6 @@
 import { s3 } from '@pulumi/aws'
 import { BucketEvent } from '@pulumi/aws/s3'
-import * as pwaTable from '../../tables/pwa/queries'
+import * as pwaTable from '../../tables/pwa/pwaQueries'
 import { deleteObject, getPwaTags } from '../util'
 
 export const pwaIconsBucket = new s3.Bucket('pwa-icons')

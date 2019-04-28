@@ -1,10 +1,10 @@
-import { Review, MAX_RATE, MIN_RATE } from '../../entities/model/review'
-import * as pwaTable from '../pwa/queries'
-import * as userTable from '../user/queries'
-import { getClient, marshal, unmarshal, unmarshalList, marshalString } from '../util'
-import { table } from './table'
-import { ReviewResults } from '../resultModels/reviewResults'
 import { DynamoDB } from 'aws-sdk'
+import { MAX_RATE, MIN_RATE, Review } from '../../entities/model/review'
+import * as pwaTable from '../pwa/pwaQueries'
+import { ReviewResults } from '../resultModels/reviewResults'
+import * as userTable from '../user/userQueries'
+import { getClient, marshal, marshalString, unmarshal, unmarshalList } from '../util'
+import { table } from './reviewTable'
 
 export const getById = async (pwaId: string, userId: string): Promise<Review | null> => {
   const result: any = await getClient()
