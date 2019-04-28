@@ -181,6 +181,34 @@ export const partialUpdate = async (
   return unmarshal(result.Attributes)
 }
 
+export const updateIcon = async (
+  iconKey: string,
+  pwaId: string,
+  devToken: string
+): Promise<Pwa> => {
+  const result: any = await getClient()
+    .update({
+      TableName: table.name.get(),
+      Key: { id: pwaId },
+      ReturnValues: 'ALL_OLD',
+      ConditionExpression:
+        'attribute_exists(#id) AND #devToken <> :v_empty AND #devToken = :v_devToken',
+      UpdateExpression: 'SET #iconUrl = :v_iconUrl',
+      ExpressionAttributeNames: {
+        '#id': 'id',
+        '#devToken': 'devToken',
+        '#iconUrl': 'iconUrl',
+      },
+      ExpressionAttributeValues: {
+        ':v_empty': marshalString(''),
+        ':v_devToken': marshalString(devToken),
+        ':v_iconUrl': marshalString(iconKey),
+      },
+    })
+    .promise()
+  return unmarshal(result.Attributes)
+}
+
 export const searchInAll = async (
   input: string,
   minResults: number,

@@ -1,4 +1,7 @@
 import { API } from '@pulumi/cloud-aws'
+import { pwaIconsBucket } from "./src/storage/pwa/pwaIconStorage";
+import { screenshotsBucket } from "./src/storage/pwa/pwaScreenshotStorage";
+import { userPicturesBucket } from "./src/storage/user/profilePictureStorage";
 import * as devTokenController from './src/controller/devToken'
 import * as pwaController from './src/controller/pwa'
 import * as userController from './src/controller/user'
@@ -30,6 +33,9 @@ endpoint.post('/api/users', userController.create) // temporary, ideally users s
 endpoint.get('/api/login', userController.login) // temporary, no security
 
 export const endpointUrl = endpoint.publish().url
+export const pwaIconsBucketName = pwaIconsBucket.bucketDomainName
+export const screenshotsBucketName = screenshotsBucket.bucketDomainName
+export const userPicturesBucketName = userPicturesBucket.bucketDomainName
 
 // Future ideas
 

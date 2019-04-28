@@ -144,3 +144,29 @@ export const updateDevToken = async (userId: string, devToken: string): Promise<
     .promise()
   return unmarshal(result.Attributes)
 }
+
+export const updateProfilePicture = async (
+  profilePictureKey: string,
+  userId: string,
+  email: string
+): Promise<User> => {
+  const result: any = await getClient()
+    .update({
+      TableName: table.name.get(),
+      Key: { id: userId },
+      ReturnValues: 'ALL_OLD',
+      ConditionExpression: 'attribute_exists(#id) AND #email = :v_email',
+      UpdateExpression: 'SET #profilePictureUrl = :v_profilePictureKey',
+      ExpressionAttributeNames: {
+        '#id': 'id',
+        '#email': 'email',
+        '#profilePictureUrl': 'profilePictureUrl',
+      },
+      ExpressionAttributeValues: {
+        ':v_email': marshalString(email),
+        ':v_profilePictureKey': marshalString(profilePictureKey),
+      },
+    })
+    .promise()
+  return unmarshal(result.Attributes)
+}
