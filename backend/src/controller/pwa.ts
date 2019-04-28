@@ -122,27 +122,31 @@ export const deleteScreenshots = async (req: Request, res: Response) => {
   const id = req.params['id']
   const screenshotsIndexesRaw = req.query.screenshotsIndexes
   const devToken = req.headers && req.headers.devtoken
-  if (!screenshotsIndexesRaw) {
+  const screenshotsIndexes =
+    screenshotsIndexesRaw &&
+    (screenshotsIndexesRaw as string)
+      .split(',')
+      .map(Number)
+      .filter(index => !isNaN(index))
+  if (!screenshotsIndexes || !screenshotsIndexes.length) {
     res.status(400).end()
-    console.log('wrong indexes')
+    console.log('no numeric indexes given')
     return
   }
-  const screenshotsIndexes = (screenshotsIndexesRaw as string)
-    .split(',')
-    .map(parseInt)
-    .filter(index => !isNaN(index))
   try {
     const oldPwa = await pwaTable.deleteScreenshots(screenshotsIndexes, id, devToken as string)
-    if (!!oldPwa) {
-      for (const index of screenshotsIndexes) {
-        await pwaStorage.deleteScreenshot(oldPwa.screenshots[index])
-      }
-      res.status(200).end()
-    } else {
-      res.status(400).end()
+    for (const index of screenshotsIndexes) {
+      await pwaStorage.deleteScreenshot(oldPwa.screenshots[index])
     }
+    res.status(200).end()
   } catch (err) {
-    res.status(500).end()
-    console.log(`DELETe ${req.path} => error: ${err.stack}`)
+    if (err.code === 'ConditionalCheckFailedException') {
+      res.status(403).end()
+    } else if (err.code === 'MissingRequiredParameter') {
+      res.status(400).json('one or more screenshots indexes is invalid')
+    } else {
+      res.status(500).end()
+      console.log(`DELETE ${req.path} => error: ${err.stack}`)
+    }
   }
 }

@@ -28,16 +28,19 @@ export interface ScreenshotTags {
   pwaID?: string
 }
 
-// TODO control max size through record.s3.object.size
-const onScreenshotUpload = (event: BucketEvent) => {
+const onScreenshotUpload = async (event: BucketEvent) => {
   console.log('call on Screenshot Upload')
   if (event.Records) {
-    event.Records.forEach(async record => {
-      record.eventName
+    for (const record of event.Records) {
+      console.log(record)
       const key: string = record.s3.object.key
       try {
         const uploadMetadata = await getScreenshotUploadTag(key)
-        if (uploadMetadata.devToken && uploadMetadata.pwaID) {
+        if (
+          uploadMetadata.devToken &&
+          uploadMetadata.pwaID &&
+          record.s3.object.size <= 2 * 1024 * 1024
+        ) {
           await pwaTable.addScreenshot(key, uploadMetadata.pwaID, uploadMetadata.devToken)
           console.log(`new screenshot for pwa ${uploadMetadata.pwaID} : ${key}`)
           console.log(`size is ${record.s3.object.size}`)
@@ -45,13 +48,14 @@ const onScreenshotUpload = (event: BucketEvent) => {
           await deleteScreenshot(key)
         }
       } catch (err) {
-        if (err.code === 'ConditionalCheckFailedException') {
-          await deleteScreenshot(key)
+        if (err.code === 'ConditionalCheckFailedException' || err.code === 'NoSuchKey') {
+          const decodedKey = decodeURI(key).split('+').join(' ')
+          await deleteScreenshot(decodedKey)
         } else {
           console.log(`error while updating screenshot : ${err.stack}`)
         }
       }
-    })
+    }
   }
 }
 screenshotsBucket.onObjectCreated('onScreenshotUpload', onScreenshotUpload)
