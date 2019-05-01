@@ -9,9 +9,9 @@ module.exports = {
   },
 
   pwa: {
-    name: 'pwa-hub-balloon',
-    themeColor: '#f46036',
-    msTileColor: '#0a0a0A'
+    name: 'Balloon',
+    themeColor: '#0a0a0a',
+    msTileColor: '#0a0a0a'
   },
 
   lintOnSave: undefined,
