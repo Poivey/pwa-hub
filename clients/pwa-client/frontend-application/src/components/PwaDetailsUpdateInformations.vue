@@ -49,6 +49,7 @@ export default {
   data: function() {
     return {
       isUpdatePwaModalOpen: false,
+      category: 'productivity',
     }
   },
   methods: {

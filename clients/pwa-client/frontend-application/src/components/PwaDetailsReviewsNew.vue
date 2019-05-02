@@ -2,12 +2,12 @@
   <div>
     <a class="button is-link is-size-7" @click="openReviewModal()">
       <b-icon icon="comment-text" size="is-small" />
-      <span>{{ userCurrentReview ? 'Update your review' : 'Add a new review' }}</span>
+      <span>{{ hasUserAlreadyReviewed ? 'Update your review' : 'Add a new review' }}</span>
     </a>
     <b-modal :active.sync="isReviewModalActive">
       <div class="box is-size-7">
         <h3 class="title is-4">
-          {{ userCurrentReview ? 'Update your review' : 'Add a new review' }}
+          {{ hasUserAlreadyReviewed ? 'Update your review' : 'Add a new review' }}
         </h3>
         <b-field label="Rating" class="mb-2">
           <b-select size="is-small" v-model="newReviewRating" placeholder="Rate">
@@ -52,12 +52,12 @@ export default {
       isReviewModalActive: false,
       newReviewContent: '',
       newReviewRating: 5,
-      maxRate: 5,
+      maxRate: 5, // TODO map current review from store to an object in data we will use as a v-model
     }
   },
   computed: {
-    userCurrentReview: function() {
-      return true
+    hasUserAlreadyReviewed: function() {
+      return !!this.$store.getters.getLoggedUserReview.userId
     },
   },
   methods: {

@@ -2,14 +2,14 @@
   <div class="box is-flex v-center-content is-size-7">
     <div class="is-flex review-header">
       <div>
-        <router-link to="/user/cc" tag="div" class="cursor-pointer">
-          <div>Username</div>
+        <router-link :to="`/user/${review.userId}`" tag="div" class="cursor-pointer">
+          <div>{{ review.username }}</div>
         </router-link>
-        <div class="has-text-grey-light">10/06/2019</div>
+        <div class="has-text-grey-light">{{ reviewDate }}</div>
       </div>
-      <div>
+      <div class="pl-3">
         <b-icon
-          v-for="star in rating"
+          v-for="star in review.rate"
           :key="star"
           class="has-text-yellow is-size-6"
           icon="star"
@@ -17,24 +17,27 @@
         />
       </div>
     </div>
-    <div>
-      Integer quis molestie quam, a imperdiet purus. Nulla dictum nulla ac sem condimentum aliquet.
-      Mauris urna turpis, feugiat ac egestas nec, euismod a lectus. Aenean vitae orci ligula. Nunc
-      non aliquam urna, et blandit diam. Nulla pulvinar orci sit amet ex viverra, vel auctor metus
-      commodo. Morbi nec velit sed risus vestibulum vehicula ut eu odio. Nulla consequat dui a arcu
-      pellentesque, suscipit imperdiet eros sagittis. Sed egestas, nibh efficitur placerat pulvinar,
-      orci odio blandit lorem, sed sollicitudin augue nibh ut ipsum. Aliquam in turpis id dolor
-      luctus suscipit.
-    </div>
+    <div>{{ review.content }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  data: function() {
-    return {
-      rating: Math.floor(Math.random() * Math.floor(5)) + 1,
-    }
+  props: {
+    review: {
+      type: Object,
+      default: () => {},
+      required: true,
+    },
+  },
+  computed: {
+    reviewDate: function() {
+      const creationDate = new Date(this.review.creationDate)
+      const day = ('0' + creationDate.getDate()).slice(-2)
+      const month = ('0' + (Number(creationDate.getMonth()) + 1)).slice(-2)
+      const year = creationDate.getFullYear()
+      return `${day}/${month}/${year}`
+    },
   },
 }
 </script>

@@ -7,11 +7,11 @@
     </div>
     <div class="column ml-3">
       <div class="is-flex flex-column main-informations">
-        <p>Twitter</p>
-        <router-link to="/user/cc">
-          <p class="has-text-link">creator name.inc</p>
+        <p>{{ pwa.name }}</p>
+        <router-link :to="`/user/${pwa.creatorId}`">
+          <p class="has-text-link">{{ pwa.creatorUsername }}</p>
         </router-link>
-        <p class="has-text-grey-light">registered on 10/06/2019</p>
+        <p class="has-text-grey-light">registered on {{ pwaCreatedDate }}</p>
         <PwaDetailsMainInformationsRating />
       </div>
     </div>
@@ -23,6 +23,18 @@ import PwaDetailsMainInformationsRating from '@/components/PwaDetailsMainInforma
 export default {
   components: {
     PwaDetailsMainInformationsRating,
+  },
+  computed: {
+    pwa: function() {
+      return this.$store.getters.getCurrentPwa
+    },
+    pwaCreatedDate: function() {
+      const createdDate = new Date(this.pwa.createdDate)
+      const day = ('0' + createdDate.getDate()).slice(-2)
+      const month = ('0' + (Number(createdDate.getMonth()) + 1)).slice(-2)
+      const year = createdDate.getFullYear()
+      return `${day}/${month}/${year}`
+    },
   },
 }
 </script>

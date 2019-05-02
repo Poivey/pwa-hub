@@ -11,7 +11,7 @@ export default {
     TheMain,
   },
   computed: {
-    isDarkThemed() {
+    isDarkThemed: function() {
       return this.$store.getters.isDarkThemeActive
     },
   },

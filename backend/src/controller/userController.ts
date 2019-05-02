@@ -1,5 +1,6 @@
 import { Request, Response } from '@pulumi/cloud'
 import { userToUserDTO, userToUserDTOWithEmail } from '../entities/dto/userDTO'
+import { pwaToPwaDTO } from '../entities/dto/pwaDTO'
 import { User } from '../entities/model/user'
 import * as newUserReq from '../entities/requests/newUser'
 import * as pwaTable from '../tables/pwa/pwaQueries'
@@ -12,7 +13,8 @@ export const get = async (req: Request, res: Response) => {
     const user: User | undefined = await userTable.getById(id)
     if (user) {
       const pwas = await pwaTable.getByCreatorId(id)
-      res.status(200).json({ user: userToUserDTO(user), pwas: pwas }) // TODO if requester is user : use userToUserDTOWithEmail
+      const pwasDTO = (pwas || []).map(pwaToPwaDTO)
+      res.status(200).json({ user: userToUserDTO(user), pwas: pwasDTO }) // TODO if requester is user : use userToUserDTOWithEmail
     } else {
       res.status(404).end()
     }
@@ -57,7 +59,7 @@ export const update = async (req: Request, res: Response) => {
   try {
     const updatedUser = await userTable.partialUpdate(userUpdatedFields, id, email as string)
     await userUpdateTopic.publish({ user: updatedUser })
-    res.status(200).json({ user: userToUserDTOWithEmail(updatedUser) })
+    res.status(200).json(userToUserDTOWithEmail(updatedUser))
   } catch (err) {
     if (err.code === 'ConditionalCheckFailedException') {
       res.status(403).end()

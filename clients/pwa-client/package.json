@@ -5,6 +5,7 @@
         "@pulumi/aws": "latest",
         "@pulumi/awsx": "latest",
         "@pulumi/pulumi": "latest",
+        "grpc": "^1.20.2",
         "mime": "^2.4.2"
     }
 }

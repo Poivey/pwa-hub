@@ -8,6 +8,9 @@ import * as userController from './controller/userController'
 export const endpoint = new API('pwa-hub-endpoint')
 
 const logRequest = (req: Request, res: Response, controllerHandler: RouteHandler) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE')
   console.log(`${req.method} ${req.path}`)
   controllerHandler(req, res, () => undefined)
 }
@@ -31,6 +34,6 @@ endpoint.delete('/api/users/{id}/devtoken', logRequest, devTokenController.destr
 
 endpoint.get('/api/users/{id}', logRequest, userController.get)
 endpoint.put('/api/users/{id}', logRequest, userController.update)
-// endpoint.delete('/api/users/{id}', userController.destroy) // auth
 endpoint.post('/api/users', logRequest, userController.create) // temporary, ideally users should be managed by cognito
+
 endpoint.get('/api/login', logRequest, userController.login) // temporary, no security

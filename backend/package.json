@@ -6,6 +6,7 @@
     "dependencies": {
         "@pulumi/cloud-aws": "^0.16.2",
         "@pulumi/pulumi": "latest",
-        "@types/uuid": "^3.4.4"
+        "@types/uuid": "^3.4.4",
+        "grpc": "^1.20.2"
     }
 }

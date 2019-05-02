@@ -5,6 +5,7 @@
         <div class="column is-4-desktop is-flex v-center-content">
           <PwaDetailsMainInformations class="mb-3" />
           <PwaDetailsButtonUrl class="mb-3" />
+          <!-- TODO if user is logged in AND user has dev token AND pwa.id == user.id  -->
           <div v-if="true">
             <PwaDetailsUpdateInformations class="mb-3" />
             <PwaDetailsUpdatePictures />
@@ -39,9 +40,16 @@ export default {
     PwaDetailsUpdateInformations,
     PwaDetailsUpdatePictures,
   },
+  methods: {
+    loadPwaDetails: function() {
+      const pwaId = this.$route.params.id
+      this.$store.dispatch('loadPwa', pwaId)
+      this.$store.dispatch('loadPwaReviews', pwaId)
+      this.$store.dispatch('loadLoggedUserPwaReview')
+    },
+  },
   mounted: function() {
-    console.log(`hello, world ! this is pwa details`)
-    console.log(`set current pwa to ${this.$route.params.id}`)
+    this.loadPwaDetails()
   },
 }
 </script>
