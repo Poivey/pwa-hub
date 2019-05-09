@@ -4,9 +4,8 @@
       <div class="columns is-desktop">
         <div class="column is-4-desktop is-flex v-center-content">
           <PwaDetailsMainInformations class="mb-3" />
-          <PwaDetailsButtonUrl class="mb-3" />
-          <!-- TODO if user is logged in AND user has dev token AND pwa.id == user.id  -->
-          <div v-if="true">
+          <PwaDetailsButtonUrl />
+          <div v-if="isCreatorLoggedAndDeveloper" class="mt-3">
             <PwaDetailsUpdateInformations class="mb-3" />
             <PwaDetailsUpdatePictures />
           </div>
@@ -40,12 +39,27 @@ export default {
     PwaDetailsUpdateInformations,
     PwaDetailsUpdatePictures,
   },
+  computed: {
+    isCreatorLoggedAndDeveloper: function() {
+      const loggedUser = this.$store.getters.getLoggedUser
+      const loggedUserDevToken = this.$store.getters.getLoggedUserDevToken
+      const getCurrentPwa = this.$store.getters.getCurrentPwa
+      return !!(
+        loggedUser &&
+        loggedUserDevToken &&
+        getCurrentPwa &&
+        loggedUser.id &&
+        getCurrentPwa.creatorId &&
+        loggedUser.id === getCurrentPwa.creatorId
+      )
+    },
+  },
   methods: {
     loadPwaDetails: function() {
       const pwaId = this.$route.params.id
       this.$store.dispatch('loadPwa', pwaId)
       this.$store.dispatch('loadPwaReviews', pwaId)
-      this.$store.dispatch('loadLoggedUserPwaReview')
+      this.$store.dispatch('loadLoggedUserPwaReview', { currentPwaId: pwaId })
     },
   },
   mounted: function() {

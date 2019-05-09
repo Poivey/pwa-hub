@@ -3,22 +3,33 @@
     <div>Category :</div>
     <b-field class="ml-2">
       <b-select v-model="category" size="is-small" icon="filter">
-        <option value="all">all categories</option>
-        <option value="productivity">productivity</option>
-        <option value="games">games</option>
-        <option value="social">social</option>
+        <option value="">All categories</option>
+        <option v-for="category in categories" :key="category" :value="category">
+          {{ category }}
+        </option>
       </b-select>
     </b-field>
   </div>
 </template>
 
 <script>
-// icon : filter
+import categories from '../util/categories.js'
+
 export default {
   data() {
     return {
-      category: 'all', //TODO will be computed, usage of vuex store to know current category
+      categories: categories,
     }
+  },
+  computed: {
+    category: {
+      get() {
+        return this.$store.getters.getSearchCategory
+      },
+      set(category) {
+        this.$store.dispatch('setSearchCategory', category)
+      },
+    },
   },
 }
 </script>

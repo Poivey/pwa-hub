@@ -60,7 +60,7 @@ export const getByCreatorId = async (
   return result.Items && unmarshalList(result.Items)
 }
 
-export const existByUrl = async (url: string): Promise<boolean> => {
+export const existByUrl = async (url: string): Promise<string | undefined> => {
   const result = await getClient()
     .query({
       TableName: table.name.get(),
@@ -71,7 +71,7 @@ export const existByUrl = async (url: string): Promise<boolean> => {
       ExpressionAttributeValues: { ':v_url': url },
     })
     .promise()
-  return result.Count != 0
+  return result.Items && result.Items.length > 0 && unmarshal(result.Items[0]).id
 }
 
 export const create = async (pwa: Pwa): Promise<Pwa> => {
@@ -157,21 +157,23 @@ export const partialUpdate = async (
       ConditionExpression:
         'attribute_exists(#id) AND #devToken <> :v_empty AND #devToken = :v_devToken',
       UpdateExpression:
-        'SET #category = :v_category, #description = :v_description, #name = :v_name, #url = :v_url, #lastUpdatedDate = :lastUpdatedDate',
+        'SET #category = :v_category, #description = :v_description, #name = :v_name, #nameLowerCase = :v_nameLowerCase, #url = :v_url, #lastUpdatedDate = :lastUpdatedDate',
       ExpressionAttributeNames: {
         '#id': 'id',
         '#devToken': 'devToken',
         '#category': 'category',
         '#description': 'description',
         '#name': 'name',
+        '#nameLowerCase': 'nameLowerCase',
         '#url': 'url',
         '#lastUpdatedDate': 'lastUpdatedDate',
       },
       ExpressionAttributeValues: {
         ':v_devToken': marshalString(devToken),
-        ':v_category': marshalString(pwaUpdatedFields.category),
+        ':v_category': marshalString(pwaUpdatedFields.category.trim().toLowerCase()),
         ':v_description': marshalString(pwaUpdatedFields.description),
-        ':v_name': marshalString(pwaUpdatedFields.name),
+        ':v_name': marshalString(pwaUpdatedFields.name.trim()),
+        ':v_nameLowerCase': marshalString(pwaUpdatedFields.name.trim().toLowerCase()),
         ':v_url': marshalString(pwaUpdatedFields.url),
         ':v_empty': marshalString(''),
         ':lastUpdatedDate': new Date().toISOString(),
@@ -257,8 +259,8 @@ const iterativeScan = async (
         IndexName: 'search',
         ExclusiveStartKey: lastEvaluatedKey,
         Limit: input ? 10 * minResults : minResults,
-        FilterExpression: input ? 'contains(#name, :v_input)' : undefined,
-        ExpressionAttributeNames: input ? { '#name': 'name' } : undefined,
+        FilterExpression: input ? 'contains(#nameLowerCase, :v_input)' : undefined,
+        ExpressionAttributeNames: input ? { '#nameLowerCase': 'nameLowerCase' } : undefined,
         ExpressionAttributeValues: input ? { ':v_input': input } : undefined,
       })
       .promise()
@@ -287,9 +289,9 @@ const iterativeCategoryQuery = async (
         ExclusiveStartKey: lastEvaluatedKey,
         Limit: input ? 10 * minResults : minResults,
         KeyConditionExpression: '#category = :v_category',
-        FilterExpression: input ? 'contains(#name, :v_input)' : undefined,
+        FilterExpression: input ? 'contains(#nameLowerCase, :v_input)' : undefined,
         ExpressionAttributeNames: input
-          ? { '#category': 'category', '#name': 'name' }
+          ? { '#category': 'category', '#nameLowerCase': 'nameLowerCase' }
           : { '#category': 'category' },
         ExpressionAttributeValues: input
           ? { ':v_category': category, ':v_input': input }

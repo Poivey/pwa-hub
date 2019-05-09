@@ -14,6 +14,8 @@
   --white: hsl(0, 0%, 100%);
 }
 .dark-theme {
+  background-color: var(--black);
+
   .box {
     background-color: var(--black-bis);
     box-shadow: 0 2px 3px rgba(hsl(0, 0%, 100%), 0.1), 0 0 0 1px rgba(hsl(0, 0%, 100%), 0.1);
@@ -58,7 +60,6 @@
     }
   }
 
-  .body,
   .section {
     background-color: var(--black);
     color: var(--white-ter);

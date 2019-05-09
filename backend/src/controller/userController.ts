@@ -14,7 +14,7 @@ export const get = async (req: Request, res: Response) => {
     if (user) {
       const pwas = await pwaTable.getByCreatorId(id)
       const pwasDTO = (pwas || []).map(pwaToPwaDTO)
-      res.status(200).json({ user: userToUserDTO(user), pwas: pwasDTO }) // TODO if requester is user : use userToUserDTOWithEmail
+      res.status(200).json({ user: userToUserDTO(user), pwas: pwasDTO })
     } else {
       res.status(404).end()
     }
@@ -57,9 +57,14 @@ export const update = async (req: Request, res: Response) => {
     return
   }
   try {
-    const updatedUser = await userTable.partialUpdate(userUpdatedFields, id, email as string)
-    await userUpdateTopic.publish({ user: updatedUser })
-    res.status(200).json(userToUserDTOWithEmail(updatedUser))
+    const userIdForNewEmail = await userTable.existByEmail(userUpdatedFields.email)
+    if (userIdForNewEmail && userIdForNewEmail !== id) {
+      res.status(409).end()
+    } else {
+      const updatedUser = await userTable.partialUpdate(userUpdatedFields, id, email as string)
+      await userUpdateTopic.publish({ user: updatedUser })
+      res.status(200).json(userToUserDTOWithEmail(updatedUser))
+    }
   } catch (err) {
     if (err.code === 'ConditionalCheckFailedException') {
       res.status(403).end()

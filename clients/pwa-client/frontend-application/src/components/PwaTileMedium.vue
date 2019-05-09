@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/pwa/cc">
+  <router-link :to="`/pwa/${pwa.id}`">
     <div class="pwa-tile box columns is-gapless is-mobile p-2">
       <div class="column is-one-quarter">
         <figure class="pwa-icon image is-square">
@@ -8,16 +8,16 @@
       </div>
       <div class="column ml-2">
         <div class="is-flex flex-column pwa-info">
-          <div class="is-size-7 nowrap">Name of the pwaName of the pwaName of the pwa</div>
-          <div class="is-size-7 nowrap has-text-grey-light">creator name.inc</div>
-          <div class="is-size-7 nowrap has-text-grey-light">category</div>
+          <div class="is-size-7 nowrap">{{ pwa.name }}</div>
+          <div class="is-size-7 nowrap has-text-grey-light">{{ pwa.creatorUsername }}</div>
+          <div class="is-size-7 nowrap has-text-grey-light">{{ pwa.category }}</div>
           <div class="is-size-7 nowrap">
             <span>
-              4.7
+              {{ pwaRate }}
               <b-icon class="has-text-yellow" icon="star" size="is-small" />
             </span>
             <span>
-              110
+              {{ pwaReviewCount }}
               <b-icon icon="comment-text" size="is-small" />
             </span>
           </div>
@@ -30,34 +30,19 @@
 <script>
 export default {
   props: {
-    // id: {
-    //   type: String,
-    //   required: true,
-    // },
-    // name: {
-    //   type: String,
-    //   required: true,
-    // },
-    // iconUrl: {
-    //   type: String,
-    //   required: true,
-    // },
-    // creatorUsername: {
-    //   type: String,
-    //   required: false,
-    // },
-    // rate: {
-    //   type: Number,
-    //   required: true,
-    // },
-    // reviewCount: {
-    //   type: Number,
-    //   required: true,
-    // },
-    // category: {
-    //   type: String,
-    //   required: false,
-    // },
+    pwa: {
+      type: Object,
+      default: () => {},
+      required: true,
+    },
+  },
+  computed: {
+    pwaRate: function() {
+      return (this.pwa.rate && this.pwa.rate.toFixed(1)) || '-'
+    },
+    pwaReviewCount: function() {
+      return this.pwa.reviewCount || 0
+    },
   },
 }
 </script>

@@ -4,9 +4,8 @@
         "@types/node": "latest"
     },
     "dependencies": {
-        "@pulumi/cloud-aws": "^0.16.2",
+        "@pulumi/cloud-aws": "^0.18.0",
         "@pulumi/pulumi": "latest",
-        "@types/uuid": "^3.4.4",
-        "grpc": "^1.20.2"
+        "@types/uuid": "^3.4.4"
     }
 }

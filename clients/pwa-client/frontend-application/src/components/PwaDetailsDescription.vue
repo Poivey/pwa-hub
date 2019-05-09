@@ -1,5 +1,5 @@
 <template>
-  <div class="isFullWidth">
+  <div class="is-full-width">
     <h5 class="title is-5 mb-2">Description</h5>
     <div class="is-flex v-center-content is-size-7-mobile">
       <div :class="{ smallDescription: !isFullDescription }">

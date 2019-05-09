@@ -1,9 +1,9 @@
 export interface Pwa {
   id: string
   name: string
+  nameLowerCase: string
   iconUrl: string
   url: string
-  version: string
   description: string
   screenshots: string[]
   category: string

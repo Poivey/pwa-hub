@@ -66,9 +66,14 @@ export const update = async (req: Request, res: Response) => {
     return
   }
   try {
-    const updatedPwa = await pwaTable.partialUpdate(pwaUpdatedFields, id, devToken as string)
-    await pwaUpdateTopic.publish({ pwa: updatedPwa })
-    res.status(200).json({ pwa: pwaToPwaDTO(updatedPwa) })
+    const pwaIdForNewUrl = await pwaTable.existByUrl(pwaUpdatedFields.url)
+    if (pwaIdForNewUrl && pwaIdForNewUrl !== id) {
+      res.status(409).end()
+    } else {
+      const updatedPwa = await pwaTable.partialUpdate(pwaUpdatedFields, id, devToken as string)
+      await pwaUpdateTopic.publish({ pwa: updatedPwa })
+      res.status(200).json(pwaToPwaDTO(updatedPwa))
+    }
   } catch (err) {
     if (err.code === 'ConditionalCheckFailedException') {
       res.status(403).end()
@@ -80,25 +85,21 @@ export const update = async (req: Request, res: Response) => {
 }
 
 export const search = async (req: Request, res: Response) => {
-  const input = req.query && req.query.input
+  const input = ((req.query && req.query.input) as string || '').trim().toLowerCase()
   const startKey = req.query && req.query.startKey
-  if (input) {
-    try {
-      const searchResult = await pwaTable.searchInAll(input as string, 10, startKey as string)
-      res.status(200).json(searchResult)
-    } catch (err) {
-      res.status(500).end()
-      console.log(`${req.method} ${req.path} => error: ${err.stack}`)
-    }
-  } else {
-    res.status(400).end()
+  try {
+    const searchResult = await pwaTable.searchInAll(input as string, 10, startKey as string)
+    res.status(200).json(searchResult)
+  } catch (err) {
+    res.status(500).end()
+    console.log(`${req.method} ${req.path} => error: ${err.stack}`)
   }
 }
 
 export const searchInCategory = async (req: Request, res: Response) => {
-  const input = req.query && req.query.input
+  const input = ((req.query && req.query.input) as string || '').trim().toLowerCase()
   const startKey = req.query && req.query.startKey
-  const category = req.params['category']
+  const category = req.params['category'].trim().toLowerCase()
   try {
     const searchResult = await pwaTable.searchInCategory(
       input as string,

@@ -16,8 +16,6 @@ export default {
     },
   },
 }
-// TODO use store
-// ie. https://github.com/vuejs/vuex/tree/dev/examples/shopping-cart/store (+ usage of /api)
 </script>
 
 <style lang="scss">

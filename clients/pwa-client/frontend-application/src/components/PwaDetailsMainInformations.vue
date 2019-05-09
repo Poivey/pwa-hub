@@ -20,6 +20,9 @@
 
 <script>
 import PwaDetailsMainInformationsRating from '@/components/PwaDetailsMainInformationsRating.vue'
+import { formatDateDDMMYYYY } from '../util/dateFormatter.js'
+
+
 export default {
   components: {
     PwaDetailsMainInformationsRating,
@@ -29,11 +32,7 @@ export default {
       return this.$store.getters.getCurrentPwa
     },
     pwaCreatedDate: function() {
-      const createdDate = new Date(this.pwa.createdDate)
-      const day = ('0' + createdDate.getDate()).slice(-2)
-      const month = ('0' + (Number(createdDate.getMonth()) + 1)).slice(-2)
-      const year = createdDate.getFullYear()
-      return `${day}/${month}/${year}`
+      return formatDateDDMMYYYY(this.pwa.createdDate)
     },
   },
 }

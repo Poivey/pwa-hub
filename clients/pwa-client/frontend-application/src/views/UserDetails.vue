@@ -2,13 +2,15 @@
   <section class="section pt-4">
     <div class="container">
       <UserDetailsMainInformations />
-      <div v-if="true">
+      <div v-if="isLoggedUser">
         <UserDetailsUpdateProfile class="mt-3" />
         <hr class="divider-small" />
         <UserDetailsDeveloperOptions />
       </div>
-      <hr class="divider-small" />
-      <UserDetailsPwaList />
+      <div v-if="hasCurrentUserCreatedPwa">
+        <hr class="divider-small" />
+        <UserDetailsPwaList />
+      </div>
     </div>
   </section>
 </template>
@@ -26,9 +28,29 @@ export default {
     UserDetailsPwaList,
     UserDetailsUpdateProfile,
   },
+  computed: {
+    isLoggedUser: function() {
+      const loggedUser = this.$store.getters.getLoggedUser
+      return loggedUser && loggedUser.id === this.$route.params.id
+    },
+    hasCurrentUserCreatedPwa: function() {
+      return !!this.$store.getters.getCurrentUserPwas.length
+    },
+  },
+  methods: {
+    loadUserDetails: function(userId) {
+      console.log(`calling load User Details with id : ${userId}`)
+      this.$store.dispatch('loadUser', { userId })
+    },
+  },
   mounted: function() {
-    console.log(`hello, world ! this is user details`)
-    console.log(`set current user to ${this.$route.params.id}`)
+    console.log(`monted user details for ${this.$route.params.id}`)
+    this.loadUserDetails(this.$route.params.id)
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log(`beforeRouteUpdate user details for ${to.params.id}`)
+    this.loadUserDetails(to.params.id)
+    next()
   },
 }
 </script>

@@ -2,8 +2,11 @@
   <div class="box side-menu-wrapper">
     <div class="is-flex v-center-content">
       <h1 class="title is-1">{{ '\{\{ logo \}\}' }}</h1>
-      <TheButtonLogInRegister />
-      <TheHeaderButtonsBurgerMenuUserInformations />
+      <div class="is-flex v-center-content" v-if="isUserLoggedIn">
+        <TheHeaderButtonsBurgerMenuUserInformations />
+        <TheButtonLogOut class="mt-3" />
+      </div>
+      <TheButtonLogInRegister v-else />
       <hr class="divider-small" />
       <b-switch v-model="isDarkThemed">
         Dark mode <b-icon icon="weather-night" size="is-small" />
@@ -16,12 +19,14 @@
 
 <script>
 import TheButtonLogInRegister from '@/components/TheButtonLogInRegister.vue'
+import TheButtonLogOut from '@/components/TheButtonLogOut.vue'
 import TheHeaderButtonsBurgerMenuUserInformations from '@/components/TheHeaderButtonsBurgerMenuUserInformations.vue'
 import ThePwaInformationsHelpButton from '@/components/ThePwaInformationsHelpButton.vue'
 
 export default {
   components: {
     TheButtonLogInRegister,
+    TheButtonLogOut,
     TheHeaderButtonsBurgerMenuUserInformations,
     ThePwaInformationsHelpButton,
   },
@@ -33,6 +38,10 @@ export default {
       set(value) {
         this.$store.dispatch('setDarkThemeStatus', value)
       },
+    },
+    isUserLoggedIn: function() {
+      const loggeduser = this.$store.getters.getLoggedUser
+      return !!(loggeduser && loggeduser.id)
     },
   },
 }

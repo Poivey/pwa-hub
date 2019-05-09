@@ -5,17 +5,24 @@
         <img src="https://bulma.io/images/placeholders/480x480.png" />
       </figure>
     </div>
-    <div>
-      <div>
-        <h3 class="title">Alphabet .inc</h3>
-        <h5 class="subtitle has-text-grey-light">Joined on 29/05/2019</h5>
-      </div>
-    </div>
+    <h3 class="title">{{ user.username }}</h3>
+    <h5 class="subtitle has-text-grey-light">Joined on {{ userAccountCreationDate }}</h5>
   </div>
 </template>
 
 <script>
-export default {}
+import { formatDateDDMMYYYY } from '../util/dateFormatter.js'
+
+export default {
+  computed: {
+    user: function() {
+      return this.$store.getters.getCurrentUser
+    },
+    userAccountCreationDate: function() {
+      return formatDateDDMMYYYY(this.user.accountCreationDate)
+    },
+  },
+}
 </script>
 
 <style scoped>

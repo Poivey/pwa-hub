@@ -2,57 +2,35 @@
   <section class="section pt-4">
     <div class="container is-flex v-center-content">
       <StoreSearchCategorySelector class="mb-4" />
-      <div class="results is-flex mb-0">
-        <!-- <PwaTileMedium
-          nickname="poiv8"
-          avatar-url="https://i.imgur.com/L1tZTGS.png"
-          email="antoine.poivey@gmail.com"
-          :comment-count="3"
-          :grade-given-count="10"
-        /> -->
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
-        <PwaTileMedium class="mb-2" />
+      <div class="results is-flex is-full-width mb-2">
+        <div v-if="!searchResults.length" class="box">
+          Nothing here 😢
+        </div>
+        <PwaTileMedium v-for="pwa in searchResults" :key="pwa.id" :pwa="pwa" class="mb-2 mx-1" />
       </div>
-      <div class="results is-flex mb-4">
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-        <PwaTileSmall class="mb-2" />
-      </div>
-      <PwaCarousel class="mb-4" />
-      <StoreSearchButtonMoreResults />
+      <StoreSearchButtonMoreResults v-if="hasMoreResults" />
     </div>
   </section>
 </template>
 
 <script>
 import PwaTileMedium from '@/components/PwaTileMedium'
-import PwaTileSmall from '@/components/PwaTileSmall'
-import StoreSearchCategorySelector from '@/components/StoreSearchCategorySelector.vue'
-import StoreSearchButtonMoreResults from '@/components/StoreSearchButtonMoreResults.vue'
-import PwaCarousel from '@/components/PwaCarousel.vue'
+import StoreSearchCategorySelector from '@/components/StoreSearchCategorySelector'
+import StoreSearchButtonMoreResults from '@/components/StoreSearchButtonMoreResults'
 
 export default {
   components: {
     PwaTileMedium,
-    PwaTileSmall,
     StoreSearchCategorySelector,
     StoreSearchButtonMoreResults,
-    PwaCarousel,
+  },
+  computed: {
+    searchResults: function() {
+      return this.$store.getters.getSearchResults
+    },
+    hasMoreResults: function() {
+      return !!this.$store.getters.getLastResultKey
+    },
   },
 }
 </script>

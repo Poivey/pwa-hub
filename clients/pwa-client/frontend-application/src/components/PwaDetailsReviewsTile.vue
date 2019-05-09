@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { formatDateDDMMYYYY } from '../util/dateFormatter.js'
+
 export default {
   props: {
     review: {
@@ -32,11 +34,7 @@ export default {
   },
   computed: {
     reviewDate: function() {
-      const creationDate = new Date(this.review.creationDate)
-      const day = ('0' + creationDate.getDate()).slice(-2)
-      const month = ('0' + (Number(creationDate.getMonth()) + 1)).slice(-2)
-      const year = creationDate.getFullYear()
-      return `${day}/${month}/${year}`
+      return formatDateDDMMYYYY(this.review.creationDate)
     },
   },
 }

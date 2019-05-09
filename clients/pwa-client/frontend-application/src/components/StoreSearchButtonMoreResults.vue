@@ -1,12 +1,18 @@
 <template>
-  <div class="is-flex has-text-link">
-    <b-icon icon="plus" class="mr-2" />
-    <p>Load more results</p>
-  </div>
+  <a class="button is-link is-size-7" @click="loadMoreResults()">
+    <b-icon :icon="'plus'" size="is-small" />
+    <span>Load more results</span>
+  </a>
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    loadMoreResults: function() {
+      this.$store.dispatch('getMoreResults')
+    },
+  },
+}
 </script>
 
 <style scoped>

@@ -5,7 +5,6 @@ export interface PwaDTO {
   name: string
   iconUrl: string
   url: string
-  version: string
   description: string
   screenshots: string[]
   category: string
@@ -23,7 +22,6 @@ export const pwaToPwaDTO = (pwa: Pwa): PwaDTO => {
     name: pwa.name,
     iconUrl: pwa.iconUrl,
     url: pwa.url,
-    version: pwa.version,
     description: pwa.description,
     screenshots: pwa.screenshots,
     category: pwa.category,

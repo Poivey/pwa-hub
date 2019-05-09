@@ -36,7 +36,7 @@
           <b-icon icon="close" />
           <span>Back</span>
         </a>
-        <a class="button is-success ml-2">
+        <a class="button is-success ml-2" :disabled="isDisabled" @click="sendNewReview()">
           <b-icon icon="comment-text" size="is-small" />
           <span>Send your review</span>
         </a>
@@ -46,26 +46,91 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data: function() {
     return {
       isReviewModalActive: false,
       newReviewContent: '',
       newReviewRating: 5,
-      maxRate: 5, // TODO map current review from store to an object in data we will use as a v-model
+      maxRate: 5,
+      minRate: 1,
     }
   },
   computed: {
+    loggedUserReview: function() {
+      return this.$store.getters.getLoggedUserReview
+    },
+    currentPwaId: function() {
+      return this.$store.getters.getCurrentPwa.id
+    },
+    loggedUserId: function() {
+      return this.$store.getters.getLoggedUser.id
+    },
     hasUserAlreadyReviewed: function() {
-      return !!this.$store.getters.getLoggedUserReview.userId
+      console.log(this.loggedUserReview)
+      return !!(this.loggedUserReview.content || this.loggedUserReview.rate)
+    },
+    isDisabled: function() {
+      return (
+        !this.newReviewContent ||
+        this.newReviewRating < this.minRate ||
+        this.newReviewRating > this.maxRate
+      )
     },
   },
   methods: {
     openReviewModal: function() {
+      this.newReviewContent = this.loggedUserReview.content || ''
+      this.newReviewRating = this.loggedUserReview.rate || 5
       this.isReviewModalActive = true
     },
     closeReviewModal: function() {
       this.isReviewModalActive = false
+    },
+    sendNewReview: function() {
+      if (!this.isDisabled && this.currentPwaId && this.loggedUserId) {
+        const url = `${process.env.VUE_APP_BACKEND_URL}/pwa/${this.currentPwaId}/reviews`
+        const body = {
+          userId: this.loggedUserId,
+          content: this.newReviewContent,
+          rate: this.newReviewRating,
+        }
+        if (this.hasUserAlreadyReviewed) {
+          axios
+            .put(url, body)
+            .then(this.onNewReviewSuccess)
+            .catch(this.onNewReviewFailure)
+        } else {
+          axios
+            .post(url, body)
+            .then(this.onNewReviewSuccess)
+            .catch(this.onNewReviewFailure)
+        }
+      }
+    },
+    onNewReviewSuccess: function() {
+      this.$store.dispatch('updateLoggedUserPwaReview', {
+        content: this.newReviewContent,
+        rate: this.newReviewRating,
+      })
+      this.$toast.open({
+        message: 'Your review has been updated',
+        position: 'is-bottom',
+        type: 'is-success',
+      })
+      this.closeReviewModal()
+    },
+    onNewReviewFailure: function(error) {
+      console.log(error)
+      this.$toast.open({
+        duration: 5000,
+        message:
+          'Your review could not be updated, please restart your application or try again later',
+        position: 'is-bottom',
+        type: 'is-danger',
+      })
     },
   },
 }
