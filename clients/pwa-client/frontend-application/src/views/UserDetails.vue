@@ -12,6 +12,7 @@
         <UserDetailsPwaList />
       </div>
     </div>
+    <b-loading :active.sync="isLoading"></b-loading>
   </section>
 </template>
 
@@ -36,19 +37,20 @@ export default {
     hasCurrentUserCreatedPwa: function() {
       return !!this.$store.getters.getCurrentUserPwas.length
     },
+    isLoading: function() {
+      const routeUserId = this.$route.params.id
+      return routeUserId !== this.$store.getters.getCurrentUser.id
+    },
   },
   methods: {
     loadUserDetails: function(userId) {
-      console.log(`calling load User Details with id : ${userId}`)
       this.$store.dispatch('loadUser', { userId })
     },
   },
   mounted: function() {
-    console.log(`monted user details for ${this.$route.params.id}`)
     this.loadUserDetails(this.$route.params.id)
   },
   beforeRouteUpdate(to, from, next) {
-    console.log(`beforeRouteUpdate user details for ${to.params.id}`)
     this.loadUserDetails(to.params.id)
     next()
   },

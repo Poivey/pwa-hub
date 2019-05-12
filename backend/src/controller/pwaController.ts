@@ -85,7 +85,7 @@ export const update = async (req: Request, res: Response) => {
 }
 
 export const search = async (req: Request, res: Response) => {
-  const input = ((req.query && req.query.input) as string || '').trim().toLowerCase()
+  const input = (((req.query && req.query.input) as string) || '').trim().toLowerCase()
   const startKey = req.query && req.query.startKey
   try {
     const searchResult = await pwaTable.searchInAll(input as string, 10, startKey as string)
@@ -97,9 +97,9 @@ export const search = async (req: Request, res: Response) => {
 }
 
 export const searchInCategory = async (req: Request, res: Response) => {
-  const input = ((req.query && req.query.input) as string || '').trim().toLowerCase()
+  const input = (((req.query && req.query.input) as string) || '').trim().toLowerCase()
   const startKey = req.query && req.query.startKey
-  const category = req.params['category'].trim().toLowerCase()
+  const category = decodeURI(req.params['category'].trim().toLowerCase())
   try {
     const searchResult = await pwaTable.searchInCategory(
       input as string,

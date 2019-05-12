@@ -1,13 +1,7 @@
 <template>
   <div>
     <div class="box p-1 is-flex carousel">
-      <PwaTileSmall class="mb-0 carousel-item" />
-      <PwaTileSmall class="mb-0 carousel-item" />
-      <PwaTileSmall class="mb-0 carousel-item" />
-      <PwaTileSmall class="mb-0 carousel-item" />
-      <PwaTileSmall class="mb-0 carousel-item" />
-      <PwaTileSmall class="mb-0 carousel-item" />
-      <PwaTileSmall class="mb-0 carousel-item" />
+      <PwaTileSmall v-for="pwa in pwaList" :key="pwa.id" :pwa="pwa" class="mb-0 carousel-item" />
     </div>
   </div>
 </template>
@@ -17,6 +11,13 @@ import PwaTileSmall from '@/components/PwaTileSmall.vue'
 export default {
   components: {
     PwaTileSmall,
+  },
+  props: {
+    pwaList: {
+      type: Array,
+      default: () => [],
+      required: true,
+    },
   },
 }
 </script>

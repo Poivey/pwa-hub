@@ -1,17 +1,17 @@
 <template>
-  <router-link to="/pwa/cc">
+  <router-link :to="`/pwa/${pwa.id}`">
     <div class="pwa-tile box is-flex flex-column p-2">
       <figure class="image is-square">
         <img src="https://bulma.io/images/placeholders/480x480.png" />
       </figure>
-      <div class="pwa-name is-size-7">Name of the pwaName of the pwaName of the pwa</div>
+      <div class="pwa-name is-size-7">{{ pwa.name }}</div>
       <div class="pwa-rating is-flex is-size-7">
         <span>
-          4.7
+          {{ pwaRate }}
           <b-icon class="has-text-yellow" icon="star" size="is-small" />
         </span>
         <span>
-          110
+          {{ pwaReviewCount }}
           <b-icon icon="comment-text" size="is-small" />
         </span>
       </div>
@@ -20,12 +20,28 @@
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    pwa: {
+      type: Object,
+      default: () => {},
+      required: true,
+    },
+  },
+  computed: {
+    pwaRate: function() {
+      return (this.pwa.rate && this.pwa.rate.toFixed(1)) || '-'
+    },
+    pwaReviewCount: function() {
+      return this.pwa.reviewCount || 0
+    },
+  },
+}
 </script>
 
 <style scoped>
 .pwa-tile {
-  max-width: 90px;
+  width: 90px;
 }
 .pwa-name {
   height: 2.3rem;

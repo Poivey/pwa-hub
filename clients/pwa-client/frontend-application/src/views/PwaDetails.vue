@@ -17,6 +17,7 @@
         </div>
       </div>
     </div>
+    <b-loading :active.sync="isLoading"></b-loading>
   </section>
 </template>
 
@@ -40,18 +41,24 @@ export default {
     PwaDetailsUpdatePictures,
   },
   computed: {
+    currentPwa: function() {
+      return this.$store.getters.getCurrentPwa
+    },
     isCreatorLoggedAndDeveloper: function() {
       const loggedUser = this.$store.getters.getLoggedUser
       const loggedUserDevToken = this.$store.getters.getLoggedUserDevToken
-      const getCurrentPwa = this.$store.getters.getCurrentPwa
       return !!(
         loggedUser &&
         loggedUserDevToken &&
-        getCurrentPwa &&
+        this.currentPwa &&
         loggedUser.id &&
-        getCurrentPwa.creatorId &&
-        loggedUser.id === getCurrentPwa.creatorId
+        this.currentPwa.creatorId &&
+        loggedUser.id === this.currentPwa.creatorId
       )
+    },
+    isLoading: function() {
+      const routePwaId = this.$route.params.id
+      return routePwaId !== this.currentPwa.id
     },
   },
   methods: {

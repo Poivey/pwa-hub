@@ -1,7 +1,9 @@
 <template>
   <div class="box side-menu-wrapper">
     <div class="is-flex v-center-content">
-      <h1 class="title is-1">{{ '\{\{ logo \}\}' }}</h1>
+      <div class="is-full-width mb-2">
+        <img src="../assets/logo_rect.svg" alt="Balloon" />
+      </div>
       <div class="is-flex v-center-content" v-if="isUserLoggedIn">
         <TheHeaderButtonsBurgerMenuUserInformations />
         <TheButtonLogOut class="mt-3" />

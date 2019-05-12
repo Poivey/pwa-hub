@@ -10,7 +10,7 @@ module.exports = {
 
   pwa: {
     name: 'Balloon',
-    themeColor: '#e35932',
+    themeColor: '#c7411b',
     msTileColor: '#0a0a0a'
   },
 
