@@ -61,13 +61,14 @@ export default {
     },
   },
   methods: {
-    setPwaContainerWidth(event) {
+    setPwaContainerWidth() {
       this.pwaContainerWidth = document.getElementById('pwa-container').clientWidth
     },
   },
   mounted() {
     this.$store.dispatch('loadHomePwaList')
     window.addEventListener('resize', this.setPwaContainerWidth)
+    this.setPwaContainerWidth()
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.setPwaContainerWidth)
