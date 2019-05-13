@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div class="is-full-width">
     <div class="box p-1 is-flex carousel">
-      <!-- TODO warcraft image is shrinked on mobile, it should have a width bigger than the parent -->
       <img
         v-for="url in screenshots"
         :key="url"
