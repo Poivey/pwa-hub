@@ -2,7 +2,7 @@
   <div class="columns is-gapless is-mobile mb-0 image-informations-wrapper">
     <div class="column is-two-fifths">
       <figure class="image is-square">
-        <img src="https://bulma.io/images/placeholders/480x480.png" />
+        <img :src="pwaIcon" />
       </figure>
     </div>
     <div class="column ml-3">
@@ -21,7 +21,7 @@
 <script>
 import PwaDetailsMainInformationsRating from '@/components/PwaDetailsMainInformationsRating.vue'
 import { formatDateDDMMYYYY } from '../util/dateFormatter.js'
-
+import { pwaIconBucketUrl, defaultPwaIcon } from '../util/imageStorage.js'
 
 export default {
   components: {
@@ -33,6 +33,11 @@ export default {
     },
     pwaCreatedDate: function() {
       return formatDateDDMMYYYY(this.pwa.createdDate)
+    },
+    pwaIcon: function() {
+      return this.pwa.iconUrl
+        ? `${pwaIconBucketUrl}${this.pwa.iconUrl}`
+        : require('@/assets/' + defaultPwaIcon)
     },
   },
 }

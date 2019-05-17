@@ -8,6 +8,17 @@
       <div class="box">
         <div class="mb-3 columns">
           <div class="column is-flex v-center-content">
+            <h5 class="title is-5">Log in</h5>
+            <b-field label="Email">
+              <b-input v-model="loginEmail"></b-input>
+            </b-field>
+            <a class="button is-link" :disabled="isLoginDisabled" @click="login()">
+              <b-icon icon="login-variant" size="is-small" />
+              <span>Log in</span>
+            </a>
+          </div>
+          <div class="column is-flex v-center-content">
+            <hr class="divider-small is-hidden-tablet" />
             <h5 class="title is-5">Register</h5>
             <b-field label="Username">
               <b-input v-model="registerUsername"></b-input>
@@ -18,17 +29,6 @@
             <a class="button is-link" :disabled="isRegisterDisabled" @click="register()">
               <b-icon icon="account-plus" size="is-small" />
               <span>Register</span>
-            </a>
-          </div>
-          <div class="column is-flex v-center-content">
-            <hr class="divider-small is-hidden-tablet" />
-            <h5 class="title is-5">Log in</h5>
-            <b-field label="Email">
-              <b-input v-model="loginEmail"></b-input>
-            </b-field>
-            <a class="button is-link" :disabled="isLoginDisabled" @click="login()">
-              <b-icon icon="login-variant" size="is-small" />
-              <span>Log in</span>
             </a>
           </div>
         </div>
@@ -108,7 +108,6 @@ export default {
           .get(`${process.env.VUE_APP_BACKEND_URL}/login`, { headers: { email } })
           .then(result => {
             const body = bodyDecoder(result.data)
-            console.log(body)
             this.$store.dispatch('loadUser', { userId: body.id, loggedUserEmail: email })
             this.$store.dispatch('loadLoggedUserPwaReview', { loggedUserId: body.id })
             this.$store.dispatch('loadDevToken', body.id)

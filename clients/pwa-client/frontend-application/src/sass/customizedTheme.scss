@@ -51,6 +51,10 @@ $colors: (
 @import '~bulma';
 @import '~buefy/src/scss/buefy';
 
+img {
+  border-radius: $radius;
+}
+
 html,
 body,
 #app {

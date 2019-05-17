@@ -14,6 +14,23 @@ export default {
     SET_PWA_INFORMATIONS(state, pwa) {
       state.currentPwa = pwa
     },
+    SET_PWA_ICON(state, iconKey) {
+      state.currentPwa.iconUrl = iconKey
+    },
+    ADD_PWA_SCREENSHOT(state, screenshotKey) {
+      if (state.currentPwa.screenshots) {
+        state.currentPwa.screenshots.push(screenshotKey)
+      } else {
+        state.currentPwa.screenshots = [screenshotKey]
+      }
+    },
+    DELETE_PWA_SCREENSHOTS(state, screenshotIndexes) {
+      if (state.currentPwa.screenshots) {
+        state.currentPwa.screenshots = state.currentPwa.screenshots.filter(
+          (_, index) => !screenshotIndexes.includes(index)
+        )
+      }
+    },
     SET_REVIEWS(state, body) {
       state.lastReviewKey = body.lastEvaluatedKey
       state.pwaReviews = body.results
@@ -41,6 +58,24 @@ export default {
 
     updateCurrentPwa(context, pwa) {
       context.commit('SET_PWA_INFORMATIONS', pwa)
+    },
+
+    updateCurrentPwaIcon(context, iconKey) {
+      if (context.getters.getCurrentPwa.id) {
+        context.commit('SET_PWA_ICON', iconKey)
+      }
+    },
+
+    addCurrentScreenshot(context, screenshotKey) {
+      if (context.getters.getCurrentPwa.id) {
+        context.commit('ADD_PWA_SCREENSHOT', screenshotKey)
+      }
+    },
+
+    deleteCurrentPwaScreenshots(context, screenshotIndexes) {
+      if (context.getters.getCurrentPwa.id) {
+        context.commit('DELETE_PWA_SCREENSHOTS', screenshotIndexes)
+      }
     },
 
     loadPwaReviews(context, pwaId) {
@@ -72,7 +107,6 @@ export default {
         axios
           .get(`${BACKEND_URL}/pwa/${pwaId}/reviews/${userId}`)
           .then(result => {
-            console.log(result)
             context.commit('SET_LOGGED_USER_REVIEW', bodyDecoder(result.data))
           })
           .catch(console.log)

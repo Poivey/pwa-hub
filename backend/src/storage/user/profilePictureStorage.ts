@@ -1,9 +1,23 @@
 import { s3 } from '@pulumi/aws'
-import { BucketEvent } from '@pulumi/aws/s3'
+import { BucketEvent, PublicReadWriteAcl } from '@pulumi/aws/s3'
 import * as userTable from '../../tables/user/userQueries'
-import { deleteObject, getUserTags } from '../util'
+import { deleteObject, getUserTags, publicGetPutPolicyForBucket } from '../util'
 
-export const userPicturesBucket = new s3.Bucket('user-profile-picture')
+export const userPicturesBucket = new s3.Bucket('user-profile-picture', {
+  acl: PublicReadWriteAcl,
+  corsRules: [
+    {
+      allowedMethods: ['GET', 'PUT'],
+      allowedOrigins: ['*'],
+      allowedHeaders: ['*'],
+    },
+  ],
+})
+
+new s3.BucketPolicy('bucketPolicyUserPicture', {
+  bucket: userPicturesBucket.bucket,
+  policy: userPicturesBucket.bucket.apply(publicGetPutPolicyForBucket),
+})
 
 const deletePicture = async (key: string) => {
   await deleteObject(userPicturesBucket.bucket.get(), key)

@@ -3,7 +3,7 @@
     <div class="pwa-tile box columns is-gapless is-mobile p-2">
       <div class="column is-one-quarter">
         <figure class="pwa-icon image is-square">
-          <img src="https://bulma.io/images/placeholders/480x480.png" />
+          <img :src="pwaIcon" />
         </figure>
       </div>
       <div class="column ml-2">
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { pwaIconBucketUrl, defaultPwaIcon } from '../util/imageStorage.js'
+
 export default {
   props: {
     pwa: {
@@ -42,6 +44,11 @@ export default {
     },
     pwaReviewCount: function() {
       return this.pwa.reviewCount || 0
+    },
+    pwaIcon: function() {
+      return this.pwa.iconUrl
+        ? `${pwaIconBucketUrl}${this.pwa.iconUrl}`
+        : require('@/assets/' + defaultPwaIcon)
     },
   },
 }

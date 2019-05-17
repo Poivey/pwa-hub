@@ -3,6 +3,20 @@ import { Tag } from 'aws-sdk/clients/s3'
 
 const getSdk = () => new sdk.S3()
 
+export const publicGetPutPolicyForBucket = (bucketName: string) => {
+  return JSON.stringify({
+    Version: '2012-10-17',
+    Statement: [
+      {
+        Effect: 'Allow',
+        Principal: '*',
+        Action: ['s3:PutObject', 's3:GetObject'],
+        Resource: [`arn:aws:s3:::${bucketName}/*`],
+      },
+    ],
+  })
+}
+
 export const deleteObject = async (bucket: string, key: string) => {
   await getSdk()
     .deleteObject({

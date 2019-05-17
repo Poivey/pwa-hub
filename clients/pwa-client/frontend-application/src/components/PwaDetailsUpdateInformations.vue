@@ -19,7 +19,11 @@
 
           <b-field label="Category">
             <b-select v-model="updatedPwa.category" icon="filter">
-              <option v-for="category in categories" :key="category" :value="category">
+              <option
+                v-for="category in categories"
+                :key="category"
+                :value="category.toLowerCase()"
+              >
                 {{ category }}
               </option>
             </b-select>
@@ -34,7 +38,7 @@
             ></b-input>
           </b-field>
         </div>
-        <a class="button is-info" @click="closeUpdateUserModal()">
+        <a class="button is-info" @click="closeUpdatePwaModal()">
           <b-icon icon="close" />
           <span>Back</span>
         </a>
@@ -60,7 +64,7 @@ export default {
       updatedPwa: {
         name: '',
         url: '',
-        category: categories[0],
+        category: categories[0].toLowerCase(),
         description: '',
       },
     }
@@ -76,7 +80,7 @@ export default {
       return !(
         this.updatedPwa.name &&
         this.updatedPwa.url &&
-        this.categories.includes(this.updatedPwa.category) &&
+        this.categories.map(c => c.toLowerCase()).includes(this.updatedPwa.category) &&
         this.updatedPwa.description
       )
     },

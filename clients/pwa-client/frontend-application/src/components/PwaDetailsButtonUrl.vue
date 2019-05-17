@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a class="button is-link is-rounded" :href="pwaUrl" target="_blank">
+    <a class="button is-link is-rounded" :href="pwaUrl" target="_blank" rel="noopener">
       <b-icon icon="open-in-new" />
       <span class="ml-1">{{ pwaUrl }}</span>
     </a>

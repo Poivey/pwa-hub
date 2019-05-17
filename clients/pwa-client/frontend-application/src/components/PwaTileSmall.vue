@@ -2,9 +2,9 @@
   <router-link :to="`/pwa/${pwa.id}`">
     <div class="pwa-tile box is-flex flex-column p-2">
       <figure class="image is-square">
-        <img src="https://bulma.io/images/placeholders/480x480.png" />
+        <img :src="pwaIcon" />
       </figure>
-      <div class="pwa-name is-size-7">{{ pwa.name }}</div>
+      <div class="pwa-name is-size-7 mt-1">{{ pwa.name }}</div>
       <div class="pwa-rating is-flex is-size-7">
         <span>
           {{ pwaRate }}
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { pwaIconBucketUrl, defaultPwaIcon } from '../util/imageStorage.js'
+
 export default {
   props: {
     pwa: {
@@ -34,6 +36,11 @@ export default {
     },
     pwaReviewCount: function() {
       return this.pwa.reviewCount || 0
+    },
+    pwaIcon: function() {
+      return this.pwa.iconUrl
+        ? `${pwaIconBucketUrl}${this.pwa.iconUrl}`
+        : require('@/assets/' + defaultPwaIcon)
     },
   },
 }

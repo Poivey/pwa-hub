@@ -22,6 +22,13 @@ export default {
       state.loggedUser = user
       localStorage.setItem('loggedUser', JSON.stringify(user || {}))
     },
+    UPDATE_LOGGED_USER_PICTURE(state, pictureUrl) {
+      state.loggedUser.profilePictureUrl = pictureUrl
+      localStorage.setItem('loggedUser', JSON.stringify(state.loggedUser || {}))
+    },
+    UPDATE_CURRENT_USER_PICTURE(state, pictureUrl) {
+      state.currentUser.profilePictureUrl = pictureUrl
+    },
     ADD_LOGGED_USER_PWA(state, pwa) {
       state.loggedUserPwas.push(pwa)
       localStorage.setItem('loggedUser', JSON.stringify(state.loggedUserPwas || []))
@@ -51,6 +58,15 @@ export default {
 
     updateLoggedUser(context, user) {
       context.commit('UPDATE_LOGGED_USER', user)
+    },
+
+    updateLoggedUserPicture(context, { pictureUrl, isCurrentUser }) {
+      if (context.getters.getLoggedUser.id) {
+        context.commit('UPDATE_LOGGED_USER_PICTURE', pictureUrl)
+      }
+      if (isCurrentUser && context.getters.getCurrentUser.id) {
+        context.commit('UPDATE_CURRENT_USER_PICTURE', pictureUrl)
+      }
     },
 
     addLoggedUserPwa(context, pwa) {

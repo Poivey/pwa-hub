@@ -15,7 +15,7 @@
 }
 
 .dark-theme {
-  background-color: var(--black);
+  background-color: var(--black) !important;
 
   .box {
     background-color: var(--black-bis);

@@ -1,9 +1,23 @@
 import { s3 } from '@pulumi/aws'
-import { BucketEvent } from '@pulumi/aws/s3'
+import { BucketEvent, PublicReadWriteAcl } from '@pulumi/aws/s3'
 import * as pwaTable from '../../tables/pwa/pwaQueries'
-import { deleteObject, getPwaTags } from '../util'
+import { deleteObject, getPwaTags, publicGetPutPolicyForBucket } from '../util'
 
-export const screenshotsBucket = new s3.Bucket('pwa-screenshots') // configurer, écriture : tout le monde, lecture : tout le monde, delete : que moi
+export const screenshotsBucket = new s3.Bucket('pwa-screenshots', {
+  acl: PublicReadWriteAcl,
+  corsRules: [
+    {
+      allowedMethods: ['GET', 'PUT'],
+      allowedOrigins: ['*'],
+      allowedHeaders: ['*'],
+    },
+  ],
+})
+
+new s3.BucketPolicy('bucketPolicyScreenshot', {
+  bucket: screenshotsBucket.bucket,
+  policy: screenshotsBucket.bucket.apply(publicGetPutPolicyForBucket),
+})
 
 export const deleteScreenshot = async (key: string) => {
   await deleteObject(screenshotsBucket.bucket.get(), key)

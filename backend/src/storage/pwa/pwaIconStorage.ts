@@ -1,9 +1,23 @@
 import { s3 } from '@pulumi/aws'
-import { BucketEvent } from '@pulumi/aws/s3'
+import { BucketEvent, PublicReadWriteAcl } from '@pulumi/aws/s3'
 import * as pwaTable from '../../tables/pwa/pwaQueries'
-import { deleteObject, getPwaTags } from '../util'
+import { deleteObject, getPwaTags, publicGetPutPolicyForBucket } from '../util'
 
-export const pwaIconsBucket = new s3.Bucket('pwa-icons')
+export const pwaIconsBucket = new s3.Bucket('pwa-icons', {
+  acl: PublicReadWriteAcl,
+  corsRules: [
+    {
+      allowedMethods: ['GET', 'PUT'],
+      allowedOrigins: ['*'],
+      allowedHeaders: ['*'],
+    },
+  ],
+})
+
+new s3.BucketPolicy('bucketPolicyIcon', {
+  bucket: pwaIconsBucket.bucket,
+  policy: pwaIconsBucket.bucket.apply(publicGetPutPolicyForBucket),
+})
 
 const deleteIcon = async (key: string) => {
   await deleteObject(pwaIconsBucket.bucket.get(), key)

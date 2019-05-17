@@ -1,12 +1,15 @@
 <template>
   <div class="is-full-width">
     <div class="box p-1 is-flex carousel">
+      <div class="is-flex is-full-width no-screenshot-message" v-if="!screenshots.length">
+        <p>This pwa has no screenshots 🙃</p>
+      </div>
       <img
-        v-for="url in screenshots"
-        :key="url"
-        @click="openImageModal(url)"
+        v-for="screenshot in screenshots"
+        :key="screenshot"
+        @click="openImageModal(screenshot)"
         class="carousel-item cursor-pointer"
-        :src="url"
+        :src="screenshot"
       />
     </div>
     <b-modal :active.sync="isImageModalActive">
@@ -20,19 +23,21 @@
 </template>
 
 <script>
+import { screenshotBucketUrl } from '../util/imageStorage.js'
+
 export default {
   data: function() {
     return {
-      screenshots: [
-        'https://i.imgur.com/Gh5oEEt.jpg',
-        'https://i.imgur.com/RIEnW6x.jpg',
-        'https://i.imgur.com/fatpS46.gif',
-        'https://i.imgur.com/8j0ZMG8.jpg',
-        'https://i.imgur.com/UyEeI0d.jpg',
-      ],
       sourceModalImage: '',
       isImageModalActive: false,
     }
+  },
+  computed: {
+    screenshots: function() {
+      return (this.$store.getters.getCurrentPwa.screenshots || []).map(
+        key => `${screenshotBucketUrl}${key}`
+      )
+    },
   },
   methods: {
     openImageModal: function(sourceModalImage) {
@@ -56,6 +61,10 @@ export default {
   margin-left: 0.25rem;
 }
 .modal-image-wrapper {
+  justify-content: center;
+}
+.no-screenshot-message {
+  align-items: center;
   justify-content: center;
 }
 </style>

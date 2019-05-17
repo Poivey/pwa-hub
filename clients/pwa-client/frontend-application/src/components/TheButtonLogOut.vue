@@ -19,7 +19,6 @@ export default {
       })
     },
   },
-  // TODO regarder localhost + CORS (unrelated, todo can be deleted)
 }
 </script>
 
