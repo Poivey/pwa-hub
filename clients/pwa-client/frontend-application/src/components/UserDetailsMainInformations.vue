@@ -33,7 +33,7 @@ export default {
 .profile-picture {
   object-fit: cover;
   object-position: 50% 50%;
-  width: 256px;
-  height: 256px;
+  width: 200px;
+  height: 200px;
 }
 </style>

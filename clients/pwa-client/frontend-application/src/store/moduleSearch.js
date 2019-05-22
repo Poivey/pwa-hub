@@ -34,9 +34,11 @@ export default {
   mutations: {
     SET_SEARCH_INPUT(state, input) {
       state.searchInput = input
+      state.lastSearchResultKey = undefined
     },
     SET_SEARCH_CATEGORY(state, category) {
       state.searchCategory = category
+      state.lastSearchResultKey = undefined
     },
     SET_SEARCH_RESULTS(state, body) {
       state.lastSearchResultKey = body.lastEvaluatedKey

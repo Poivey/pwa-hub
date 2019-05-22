@@ -30,6 +30,9 @@ export default {
       state.currentUser.profilePictureUrl = pictureUrl
     },
     ADD_LOGGED_USER_PWA(state, pwa) {
+      if (!state.loggedUserPwas) {
+        state.loggedUserPwas = []
+      }
       state.loggedUserPwas.push(pwa)
       localStorage.setItem('loggedUser', JSON.stringify(state.loggedUserPwas || []))
     },

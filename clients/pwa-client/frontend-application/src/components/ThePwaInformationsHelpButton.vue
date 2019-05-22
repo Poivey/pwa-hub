@@ -11,10 +11,10 @@
             <div class="mb-4">
               <h5 class="title is-5">What's a PWA ?</h5>
               <p>
-                PWAs (Progressive Web Apps) are websites that are using the latest web technoligies,
+                PWAs (Progressive Web Apps) are websites that are using the latest web technologies,
                 and that can be added to your device and be used as you would use a native
                 application. Once on your device, a PWA act as any other applications. They are
-                lightweight, don't require installation, update themselves and are the same on every
+                light, do not require installation, update themselves and are the same on every
                 device you own. You can also try a PWA by simply going to its website before adding
                 it to your device.
               </p>
@@ -28,7 +28,7 @@
               </p>
               <p>
                 This way you would have lighter applications on your device, that doesn't require
-                installations, are always up to date and would be the same on every device you own !
+                installations, are always up to date and would be the same on every device you own!
               </p>
             </div>
             <div>
@@ -36,15 +36,15 @@
               <p class="mb-2">
                 Balloon is designed to register existing PWAs, it is similar to classic native app
                 stores such as Google Play, Apple App Store or Windows Store, but it applies this
-                concept to PWAs. This way Ballon provides you an easy way to search, discover and
+                concept to PWAs. This way Ballon provides to you an easy way to search, discover and
                 review PWAs.
               </p>
               <p>
-                One of the main strenght of Balloon is that it is itself a PWA, so you can can use
+                One of the main strenght of Balloon is that it is itself a PWA, so you can use
                 Chrome of any compatible web browser to add Balloon to your smarphone or PC ! By
-                being PWA, you can benefit of Ballon store on every device, no matter which is its
-                native Application store of if it is powered by Android, iOs, Windows, Linux or any
-                other operating system.
+                being PWA, you can enjoy Ballon store on every device, no matter which is its native
+                Application store of if it is powered by Android, iOS, Windows, Linux or any other
+                operating system.
               </p>
             </div>
           </b-tab-item>
@@ -61,8 +61,8 @@
             <div>
               <h5 class="title is-5">How can I register my PWA ?</h5>
               <p>
-                You can use our API or do it directrly from here. See your profile page to register
-                a new PWA !
+                You can use our API or do it directly from here. See your profile page to register a
+                new PWA!
               </p>
             </div>
           </b-tab-item>

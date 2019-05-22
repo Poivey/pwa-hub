@@ -10,7 +10,7 @@
         <div class="is-flex flex-column pwa-info">
           <div class="is-size-7 nowrap">{{ pwa.name }}</div>
           <div class="is-size-7 nowrap has-text-grey-light">{{ pwa.creatorUsername }}</div>
-          <div class="is-size-7 nowrap has-text-grey-light">{{ pwa.category }}</div>
+          <div class="is-size-7 nowrap has-text-grey-light capitalize">{{ pwa.category }}</div>
           <div class="is-size-7 nowrap">
             <span>
               {{ pwaRate }}
@@ -70,5 +70,8 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.capitalize {
+  text-transform: capitalize;
 }
 </style>

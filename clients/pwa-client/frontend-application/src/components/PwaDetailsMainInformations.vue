@@ -11,7 +11,7 @@
         <router-link :to="`/user/${pwa.creatorId}`">
           <p class="has-text-link">{{ pwa.creatorUsername }}</p>
         </router-link>
-        <p class="has-text-grey-light">registered on {{ pwaCreatedDate }}</p>
+        <p class="has-text-grey-light">Registered on {{ pwaCreatedDate }}</p>
         <PwaDetailsMainInformationsRating />
       </div>
     </div>

@@ -29,7 +29,7 @@ export default {
       return this.$store.getters.getSearchResults
     },
     hasMoreResults: function() {
-      return !!this.$store.getters.getLastResultKey
+      return !!this.$store.getters.getLastSearchResultKey
     },
   },
 }

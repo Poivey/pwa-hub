@@ -1,13 +1,13 @@
 export default [
   'Art & design',
+  'Developer',
   'Entertainment',
-  'Finance',
+  'Food',
   'Games',
   'Lifestyle',
-  'Newspaper',
-  'Others',
-  'Productivity',
-  'Shopping',
+  'Music',
+  'News',
   'Social',
   'Sport',
+  'Travel',
 ]
