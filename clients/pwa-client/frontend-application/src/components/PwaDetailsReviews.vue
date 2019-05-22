@@ -10,7 +10,7 @@
             <div>This PWA has no review yet</div>
           </div>
         </div>
-        <div v-for="review in reviews" :key="review.userId" class="column is-half">
+        <div v-for="review in reviews" :key="review.userId" class="column is-half review">
           <PwaDetailsReviewsTile :review="review" />
         </div>
       </div>
@@ -54,4 +54,7 @@ export default {
 </script>
 
 <style scoped>
+.review {
+  min-width: 252px;
+}
 </style>
